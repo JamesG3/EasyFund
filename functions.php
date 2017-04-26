@@ -3,6 +3,7 @@
 # ********login page*******
 function loginCheck($login_name, $psw){
 	# check name or email
+	#test
 }
 
 
