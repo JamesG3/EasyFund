@@ -4,12 +4,8 @@
 
     $input_name = $_POST["uname"];
 
-   	if ((!ctype_alnum($input_name) and strpos('adfa', ' ')!==false) or (!ctype_alnum($_POST["keyword"]) and $_POST["keyword"] != '' and strpos('adfa', ' ')!==false)){
-   		echo "The input is not valid!";
-   		exit;						#prevent sql injection
-   	}
 
-    $auth1 = "SELECT password FROM user where username = ";
+    $auth1 = "SELECT password, uid FROM user where username = ";
     $auth1 .= "'".$input_name."'";
     # 需改为prepare statement
    	$authen1 = $db->query($auth1);
@@ -20,7 +16,7 @@
 
 
 
-    $auth2 = "SELECT password FROM user where email = ";
+    $auth2 = "SELECT password, uid FROM user where email = ";
     $auth2 .= "'".$input_name."'";
     # 需改为prepare statement
     $authen2 = $db->query($auth2);
@@ -36,11 +32,14 @@
    	if(mysqli_num_rows($authen1)==1){
       while ($row = $authen1->fetch_assoc()){
         $password = $row['password'];
+        $uid = $row['uid'];
       }
+
       if ($_POST["psw"] == $password){
-        $_SESSION["loginUsername"] = $input_name;
-        $_SESSION["keyword"] = $_POST["keyword"];
+        #$_SESSION["username"] = $input_name;
+        $_SESSION["uid"] = $uid;
         header("Location: mainpage.php");
+
       }
 
       else{
@@ -57,11 +56,13 @@
    else if(mysqli_num_rows($authen2)==1){
       while ($row = $authen2->fetch_assoc()){
         $password = $row['password'];
+        $uid = $row['uid'];
       }
       if ($_POST["psw"] == $password){
-        $_SESSION["loginUsername"] = $input_name;
-        $_SESSION["keyword"] = $_POST["keyword"];
+        #$_SESSION["username"] = $input_name;
+        $_SESSION["uid"] = $uid;
         header("Location: mainpage.php");
+
       }
 
       else{
