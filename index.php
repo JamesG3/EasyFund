@@ -19,10 +19,14 @@
   </tr>
 </table>
 
-<p align=center><input type="submit" value="search" name ="sub">
+<p align=center><input type="submit" value="login" name ="sub">
 
 
 </form>
+<form action="register.php">
+<p align=center><input type="submit" value="register">
+</form>
+
 </body>
 </html>
 

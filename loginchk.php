@@ -40,7 +40,7 @@
       if ($_POST["psw"] == $password){
         $_SESSION["loginUsername"] = $input_name;
         $_SESSION["keyword"] = $_POST["keyword"];
-        header("Location: show.php");
+        header("Location: mainpage.php");
       }
 
       else{
@@ -61,7 +61,7 @@
       if ($_POST["psw"] == $password){
         $_SESSION["loginUsername"] = $input_name;
         $_SESSION["keyword"] = $_POST["keyword"];
-        header("Location: show.php");
+        header("Location: mainpage.php");
       }
 
       else{
