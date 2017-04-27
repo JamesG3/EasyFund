@@ -7,7 +7,8 @@
     $uid = $_SESSION["uid"];
     #$uname = 'Fanta';
 
-    $db = new mysqli('127.0.0.1', 'root', 'root','easyfund') or die('Could not connect: ' . mysqli_error());
+    #$db = new mysqli('127.0.0.1', 'root', 'root','easyfund') or die('Could not connect: ' . mysqli_error());
+    require 'db.php';
 
     #get uid
     /*

@@ -37,14 +37,14 @@ if(isset($_SESSION["uid"])){
 
 	$recentproject_query = "SELECT *  from project where uid in (  select user1 from friendship where user2 = {$_SESSION["uid"]} )";
 	// $recentproject_query = "SELECT *  from project where uid = {$_SESSION["uid"]}";
-	$recentproject_result = mysqli_query($connection,$recentproject_query);
+	$recentproject_result = mysqli_query($db,$recentproject_query);
 
 
 	// echo "check!";
 	// $prow = mysqli_fetch_array($recentproject_result);
 
 	// if (!$prow) {
-	//     printf("Error: %s\n", mysqli_error($connection));
+	//     printf("Error: %s\n", mysqli_error($db));
 	//    	exit();
 	// }
 
@@ -94,7 +94,7 @@ if(isset($_SESSION["uid"])){
 
 	$recentcomment_query = "SELECT *  from comment where uid in (  select user1 from friendship where user2 = {$_SESSION["uid"]} )";
 	// $recentproject_query = "SELECT *  from project where uid = {$_SESSION["uid"]}";
-	$recentcomment_result = mysqli_query($connection,$recentcomment_query);
+	$recentcomment_result = mysqli_query($db,$recentcomment_query);
 
 
 
@@ -124,7 +124,7 @@ if(isset($_SESSION["uid"])){
 **************************************************/
 
 	$recentpledges_query = "SELECT *  from fund where uid in (  select user1 from friendship where user2 = {$_SESSION["uid"]} )";
-	$recentpledges_result = mysqli_query($connection,$recentpledges_query);
+	$recentpledges_result = mysqli_query($db,$recentpledges_query);
 
 
 
@@ -159,7 +159,7 @@ if(isset($_SESSION["uid"])){
 
 
 	$recentLike_query = "SELECT project.pid  as ppid,pname,minamount,maxamount,project.uid as puid,fundDdl, projDdl, category, tags, description, likePj.uid as luid  from project right join likePj on project.pid = likePj.pid where likePj.uid in ( select user1 from friendship where user2 = {$_SESSION["uid"]} )";
-	$recentLike_result = mysqli_query($connection,$recentLike_query);
+	$recentLike_result = mysqli_query($db,$recentLike_query);
 
 
 		echo "<table border ='1'>
@@ -203,7 +203,7 @@ if(isset($_SESSION["uid"])){
 
 
 	$mypledges_query = "SELECT *  from fund where uid ={$_SESSION["uid"]}";
-	$mypledges_result = mysqli_query($connection,$mypledges_query);
+	$mypledges_result = mysqli_query($db,$mypledges_query);
 
 		echo "<table border ='1'>
 		<th>My Pledges</th>
@@ -235,7 +235,7 @@ if(isset($_SESSION["uid"])){
 6) My Pledge rate
 **************************************************/
 	$mypledgesrate_query = "SELECT *  from sponRate where uid ={$_SESSION["uid"]}";
-	$mypledgesrate_result = mysqli_query($connection,$mypledgesrate_query);
+	$mypledgesrate_result = mysqli_query($db,$mypledgesrate_query);
 
 		echo "<table border ='1'>
 		<th>My Rate</th>
