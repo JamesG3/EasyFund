@@ -24,7 +24,6 @@
    		showerror();				# if query faild, show error message.
    	}
 
-	session_start();
 
   if(mysqli_num_rows($ifexist1)==0 and mysqli_num_rows($ifexist2)==0){
       # insert this new user into user table
@@ -44,11 +43,11 @@
   else{
 
     # the user is already exist!
-    $_SESSION["message"] = "This user is already existed! ";
+    echo "This user is already existed! ";
       // Relocate to the logout page
-     echo $_SESSION["message"];
-     session_destroy();
-     exit;
+     #echo $_SESSION["message"];
+     #session_destroy();
+     #exit;
   }
 
 
