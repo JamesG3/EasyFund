@@ -58,9 +58,7 @@ if (isset($_SESSION['uid'])){
 		<td><strong>interests:</strong></td>
 		<td> <input type="text" size="20" name="interests" value = <?php echo "{$row['interests']}" ?> > </td>
 	</tr>
-	<tr>
-		
-	</tr>
+
 	<?php
 	}
 	?>

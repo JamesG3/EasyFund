@@ -1,7 +1,270 @@
 <?php
+session_start();
 
-echo "projects ID:      ";
 
-echo $_GET['prjID'];
+if (isset($_SESSION['uid'])){
+	$uid = $_SESSION['uid'];
+	#$db = new mysqli('127.0.0.1', 'root', 'root','easyfund') or die('Could not connect: ' . mysqli_error());
+	require 'db.php';
+	$query = "SELECT username FROM user where uid = '$uid'";
+	$res = $db->query($query);
+
+	if (!$res){
+   	echo "Something wrong!!";
+   	showerror();				# if query faild, show error message.
+   	}
+
+   	while ($row = $res->fetch_assoc()){
+    $username = $row['username'];
+    }
+
+	?>
+	<html>
+	<body>
+		<h2>Hi <?php echo $username ?>
+	<table cellspacing="20" align=center>
+		<tr>
+			<td><strong>project name</strong></td>
+			<td><strong>category</strong></td>
+			<td><strong>tags</strong></td>
+			<td><strong>minimum amount</strong></td>
+			<td><strong>maximum amount</strong></td>
+			<td><strong>current pledge</strong></td>
+			<td><strong>description</strong></td>
+			<td><strong>pledge ddl</strong></td>
+			<td><strong>project ddl</strong></td>
+			<td><strong>status</strong></td>
+			<td><strong>like</strong></td>
+
+		</tr>
+
+
+	<?php
+	$_SESSION['pid'] = $_GET['prjID'];
+
+	$find = "SELECT * FROM project where pid = ";
+	$find .= "'".$_SESSION['pid']."'";
+	$projinfo = $db->query($find);
+
+
+
+	$like = "SELECT count(uid) as COUN FROM likePj where pid = ";
+	$like .= "'".$_SESSION['pid']."'";
+	$likenum = $db->query($like);
+	/*
+	$projinfo = $db->prepare("SELECT * FROM project where pid = ?");
+	$projinfo->bind_param("i", $tem);
+	$projinfo->execute();
+	*/
+
+	while ($row = $projinfo->fetch_assoc()){
+		$pjstate = $row['Pjstate'];
+	?>
+	<tr>
+		<td name = "pname"> <?php echo "{$row['pname']}" ?> </td>
+		<td name = "category"> <?php echo "{$row['category']}" ?> </td>
+		<td name = "tags"> <?php echo "{$row['tags']}" ?> </td>
+		<td name = "minamount"> <?php echo "{$row['minamount']}" ?> </td>
+		<td name = "maxamount"> <?php echo "{$row['maxamount']}" ?> </td>
+		<td name = "curramount"> <?php echo "{$row['current_amount']}" ?> </td>
+		<td name = "description"> <?php echo "{$row['description']}" ?> </td>
+		<td name = "fundDdl"> <?php echo "{$row['fundDdl']}" ?> </td>
+		<td name = "projDdl"> <?php echo "{$row['projDdl']}" ?> </td>
+		<td name = "Pjstate"> <?php echo "{$row['Pjstate']}" ?> </td>
+
+		<?php
+		while ($row = $likenum->fetch_assoc()){
+			$likecount = $row['COUN'];
+		echo "<td name = 'likePj'>";
+		echo $likecount;
+		echo "</td>";
+		}
+		?>
+
+	</tr>
+	</table>
+
+	<table cellspacing="20" align=center>
+	<tr>
+		<td><strong>material download</strong></td>
+		<td><strong>material time</strong></td>
+	</tr>
+	<?php
+	}
+
+	$getmaterial = "SELECT * from material WHERE pid = ";
+	$getmaterial .= "'".$_SESSION['pid']."'";
+	$getmaterial .= "ORDER by materialtime desc";
+	$mate = $db->query($getmaterial);
+
+	while ($row = $mate->fetch_assoc()){
+	?>
+
+	<tr>
+		<td><a href = <?php echo "{$row['mediaMate']}" ?> > Download  </td>
+		<td name = "materialtime"> <?php echo "{$row['materialtime']}" ?> </td>
+	</tr>
+
+
+	<?php
+		}
+	?>
+
+	</table>
+
+
+	<table cellspacing="20" align=center>
+	<tr>
+		<td><strong>user</strong></td>
+		<td align = center><strong>comment</strong></td>
+		<td><strong>posttime</strong></td>
+	</tr>
+	<?php
+	
+
+	$getcomment = "SELECT * from comment WHERE pid = ";
+	$getcomment .= "'".$_SESSION['pid']."'";
+	$comment = $db->query($getcomment);
+
+	while ($row = $comment->fetch_assoc()){
+	?>
+
+	<tr>
+		<td name = "user"> <?php echo "{$row['uid']}" ?> </td>
+		<td name = "comment"> <?php echo "{$row['comm']}" ?> </td>
+		<td name = "posttime"> <?php echo "{$row['posttime']}" ?> </td>
+	</tr>
+
+
+	<?php
+		}
+	?>
+	</table>
+
+	<?php
+	if($pjstate == 'complete'){
+	?>
+	<table cellspacing="20" align=center>
+	<tr>
+		<td><strong>user</strong></td>
+		<td><strong>star</strong></td>
+		<td><strong>review</strong></td>
+		<td><strong>ratetime</strong></td>
+		<td><strong>owner's review</strong></td>
+	</tr>
+	<?php
+	
+
+	$getreview = "SELECT * from sponRate WHERE pid = ";
+	$getreview .= "'".$_SESSION['pid']."'";
+	$getreview .= "ORDER by ratetime desc";
+	$rate = $db->query($getreview);
+
+	while ($row = $rate->fetch_assoc()){
+	?>
+
+	<tr>
+		<td name = "user"> <?php echo "{$row['uid']}" ?> </td>
+		<td name = "star"> <?php echo "{$row['star']}" ?> </td>
+		<td name = "review"> <?php echo "{$row['review']}" ?> </td>
+		<td name = "ratetime"> <?php echo "{$row['ratetime']}" ?> </td>
+		<td name = "ownerreview"> <?php echo "{$row['owner_review']}" ?> </td>
+
+	</tr>
+
+
+	<?php
+			}
+		}
+	?>
+
+	</table>
+	<?php
+		if($pjstate == 'incomplete'){
+	?>
+	<form method="POST" action="pledge_action.php">
+		<table align = "center">
+			<tr>
+				<td><strong>Pledge for this project:</strong></td>
+				<td><input type="text" size="20" name="pledge"></td>
+				<td><p align=center><input type="submit" value="pledge!"></td>
+			</tr>
+		</table>
+	</form>
+	<?php
+		}
+
+
+	$getlike = "SELECT pid from likePj where uid = ";
+    $getlike .= "'".$_SESSION['uid']."'";
+    $getlike .= " and pid = ";
+    $getlike .= "'".$_SESSION['pid']."'";
+    $get_like = $db->query($getlike);
+
+    if(mysqli_num_rows($get_like)==0){
+
+	?>
+
+
+	<form method="POST" action="like_action.php">
+		<table align = "center">
+			<tr>
+				<td><p align=center><input type="submit" value="I like this project!"></td>
+			</tr>
+
+		</table>
+	</form>
+
+	</body>
+		</html>
+
+	<?php
+		}
+
+	else{
+		echo "<table align = 'center'><tr><td>You've liked this project!</td></tr></table>";
+	}
+
+
+	$getspon = "SELECT uid from fund where uid = ";
+    $getspon .= "'".$_SESSION['uid']."'";
+    $getspon .= " and pid = ";
+    $getspon .= "'".$_SESSION['pid']."'";
+    $get_spon = $db->query($getspon);
+
+
+    $ifrate = "SELECT uid from sponRate where uid = ";
+    $ifrate .= "'".$_SESSION['uid']."'";
+    $ifrate .= " and pid = ";
+    $ifrate .= "'".$_SESSION['pid']."'";
+    $if_rate = $db->query($ifrate);
+
+
+    if(mysqli_num_rows($get_spon)==1){
+    	if(mysqli_num_rows($if_rate)==0){
+    		if($pjstate == 'incomplete' or $pjstate == 'finished'){
+    			echo "<table align = 'center'><tr><td>You cannot rate this project now(incomplete)!</td></tr></table>";
+    		}
+    		else if(($pjstate == 'complete')){
+    		echo "<form action='rateproj.php'>
+    		<p align=center><input type='submit' value='Go to rate this project!'></form>";
+    			}
+    		else{
+    		echo "<table align = 'center'><tr><td>You cannot rate this project anymore(failed)!</td></tr></table>";
+    		}
+    		}
+    	else{
+    		echo "<table align = 'center'><tr><td>You've rated this project!</td></tr></table>";
+    	}
+		}
+
+	}
+
+
+
+else{
+		echo "Dude you are not authorized to access this page!";
+	}
+
 
 ?>
