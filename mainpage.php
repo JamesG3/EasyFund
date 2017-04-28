@@ -29,10 +29,6 @@ require 'db.php';
 
   			window.location.href = "projPost.php";
 		}
-		function search(){
-
-  			window.location.href = "brief_project.php";
-		}
 
 
 	</script>
@@ -43,16 +39,17 @@ require 'db.php';
 <body>
 
 
-
 <?php
 
 
 echo "<input type='submit' value='edit profile' onClick='edit_prof()';>";
 echo "<input type='submit' value='create project' onClick='create_proj()';>";
 echo "<input type='submit' value='logout' onClick='logout()';>";
-echo "<input type='text' name='search_text' id='search_text' value=''>";
-echo "<input type='submit' value='search' onClick='search()';>";
 
+echo "<form method='POST' action='brief_project_from_search.html'>";
+echo "<input type='text' name='searchtext' >";
+echo "<input type='submit' value='search'>";
+echo "</form>";
 
 
 echo "<br>";
