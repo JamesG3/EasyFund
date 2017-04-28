@@ -56,14 +56,14 @@ echo "<input type='submit' value='back to my page' onClick='back_to_me()';>";
 
 	$recentproject_query = "SELECT *  from project where uid in (  select user1 from friendship where user2 = {$_GET["id"]} )";
 	// $recentproject_query = "SELECT *  from project where uid = {$_SESSION["uid"]}";
-	$recentproject_result = mysqli_query($connection,$recentproject_query);
+	$recentproject_result = mysqli_query($db,$recentproject_query);
 
 
 	// echo "check!";
 	// $prow = mysqli_fetch_array($recentproject_result);
 
 	// if (!$prow) {
-	//     printf("Error: %s\n", mysqli_error($connection));
+	//     printf("Error: %s\n", mysqli_error($db));
 	//    	exit();
 	// }
 
@@ -115,7 +115,7 @@ echo "<input type='submit' value='back to my page' onClick='back_to_me()';>";
 
 	$recentcomment_query = "SELECT *  from comment where uid in (  select user1 from friendship where user2 = {$_GET["id"]} )";
 
-	$recentcomment_result = mysqli_query($connection,$recentcomment_query);
+	$recentcomment_result = mysqli_query($db,$recentcomment_query);
 
 
 
@@ -145,7 +145,7 @@ echo "<input type='submit' value='back to my page' onClick='back_to_me()';>";
 **************************************************/
 
 	$recentpledges_query = "SELECT *  from fund where uid in (  select user1 from friendship where user2 = {$_GET["id"]} )";
-	$recentpledges_result = mysqli_query($connection,$recentpledges_query);
+	$recentpledges_result = mysqli_query($db,$recentpledges_query);
 
 
 
@@ -180,7 +180,7 @@ echo "<input type='submit' value='back to my page' onClick='back_to_me()';>";
 
 
 	$recentLike_query = "SELECT project.pid  as ppid,pname,minamount,maxamount,project.uid as puid,fundDdl, projDdl, category, tags, description, likePj.uid as luid  from project right join likePj on project.pid = likePj.pid where likePj.uid in ( select user1 from friendship where user2 = {$_GET["id"]} )";
-	$recentLike_result = mysqli_query($connection,$recentLike_query);
+	$recentLike_result = mysqli_query($db,$recentLike_query);
 
 
 		echo "<table border ='1'>
@@ -224,7 +224,7 @@ echo "<input type='submit' value='back to my page' onClick='back_to_me()';>";
 
 
 	$mypledges_query = "SELECT *  from fund where uid ={$_GET["id"]}";
-	$mypledges_result = mysqli_query($connection,$mypledges_query);
+	$mypledges_result = mysqli_query($db,$mypledges_query);
 
 		echo "<table border ='1'>
 		<th>My Pledges</th>
@@ -256,7 +256,7 @@ echo "<input type='submit' value='back to my page' onClick='back_to_me()';>";
 6) My Pledge rate
 **************************************************/
 	$mypledgesrate_query = "SELECT *  from sponRate where uid ={$_GET["id"]}";
-	$mypledgesrate_result = mysqli_query($connection,$mypledgesrate_query);
+	$mypledgesrate_result = mysqli_query($db,$mypledgesrate_query);
 
 		echo "<table border ='1'>
 		<th>My Rate</th>
@@ -285,7 +285,7 @@ echo "<input type='submit' value='back to my page' onClick='back_to_me()';>";
 7) recommend
 **************************************************/
 	$rec_keyword_query = "SELECT keyword  from keywordHistory where uid ={$_GET["id"]}";
-	$rec_keyword_result = mysqli_query($connection,$rec_keyword_query);
+	$rec_keyword_result = mysqli_query($db,$rec_keyword_query);
 
 	// $rowcount=mysqli_num_rows($rec_result);
 	// echo "count:";
@@ -302,7 +302,7 @@ echo "<input type='submit' value='back to my page' onClick='back_to_me()';>";
 	#echo $new_like;
 
 	$rec_tag_query = "SELECT tag  from tagHistory where uid ={$_GET["id"]}";
-	$rec_tag_result = mysqli_query($connection,$rec_tag_query);
+	$rec_tag_result = mysqli_query($db,$rec_tag_query);
 
 
 
@@ -317,7 +317,7 @@ echo "<input type='submit' value='back to my page' onClick='back_to_me()';>";
 
 
 	$rec_query = "SELECT * from project where (pname REGEXP '$new_like'  or category REGEXP '$new_like' or tags REGEXP '$new_like' or description REGEXP '$new_like' ) and pjstate='incomplete'";
-	$rec_result = mysqli_query($connection,$rec_query);
+	$rec_result = mysqli_query($db,$rec_query);
 
 	// $rowcount=mysqli_num_rows($rec_result);
 	// echo "count:";

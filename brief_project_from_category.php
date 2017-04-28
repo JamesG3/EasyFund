@@ -31,7 +31,7 @@ echo $_SESSION["uid"];
 
 
 	$search_query = "SELECT *  FROM project  where category = '{$_GET["category"]}'";
-	$search_result = mysqli_query($connection,$search_query);
+	$search_result = mysqli_query($db,$search_query);
 
 
 		echo "<table border ='1'>
@@ -74,13 +74,13 @@ echo $_SESSION["uid"];
 	$currenttime = date('Y-m-d H:i:s');
 	$insert_tag = "INSERT into tagHistory (uid, tag, searchTagTime) values ('{$_SESSION["uid"]}', '{$_GET["category"]}', '$currenttime')";
 
-	if(mysqli_query($connection, $insert_tag)) {
+	if(mysqli_query($db, $insert_tag)) {
 		echo "Congratulations ";
 		echo ":  ";
     	echo "New record created successfully";
 		}
 	else{
-    	echo "Error: " . $sql . "<br>" . mysqli_error($connection);
+    	echo "Error: " . $sql . "<br>" . mysqli_error($db);
 		}
 
 ?>

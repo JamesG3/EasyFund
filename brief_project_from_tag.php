@@ -1,21 +1,36 @@
 <?php
 session_start();
+
 require 'db.php';
 require 'js_functions.html';
 
 date_default_timezone_set('America/New_York');
 
+
 echo "test:    ";
-echo $_POST["searchtext"];
+echo $_GET["tag"];
+echo $_SESSION["uid"];
 
 ?>
 
+<!DOCTYPE html>
 
+
+<html>
+<head>
+	<title>MainPage</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+</head>
+<body>
 
 
 <?php
 
-	$search_query = "SELECT *  FROM project  where (pname like '%{$_POST["searchtext"]}%'  or category like '%{$_POST["searchtext"]}%'  or tags like '%{$_POST["searchtext"]}%'  or description like '%{$_POST["searchtext"]}%')";
+
+
+
+	$search_query = "SELECT *  FROM project  where tags like '%{$_GET["tag"]}%'";
 	$search_result = mysqli_query($db,$search_query);
 
 
@@ -55,10 +70,11 @@ echo $_POST["searchtext"];
 
 	}; 
 
-	$currenttime = date('Y-m-d H:i:s');
-	$insert_search = "INSERT into keywordHistory (uid, keyword, searchKwTime) values ('{$_SESSION["uid"]}', '{$_POST["searchtext"]}', '$currenttime')";
 
-	if(mysqli_query($db, $insert_search)) {
+	$currenttime = date('Y-m-d H:i:s');
+	$insert_tag = "INSERT into tagHistory (uid, tag, searchTagTime) values ('{$_SESSION["uid"]}', '{$_GET["tag"]}', '$currenttime')";
+
+	if(mysqli_query($db, $insert_tag)) {
 		echo "Congratulations ";
 		echo ":  ";
     	echo "New record created successfully";
@@ -67,5 +83,8 @@ echo $_POST["searchtext"];
     	echo "Error: " . $sql . "<br>" . mysqli_error($db);
 		}
 
-
 ?>
+
+	
+</body>
+</html>
