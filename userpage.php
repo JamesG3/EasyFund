@@ -1,6 +1,9 @@
 <?php
 session_start();
+#echo "userpage test";
+#echo $_GET["id"];
 require 'db.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -11,33 +14,22 @@ require 'db.php';
 	<title>MainPage</title>
 <!-- <script type="text/javascript">
 	function add(){
-		header("Location: mainpage.php");
+		header("Location: index.html");
 	}
 </script> -->
 
 
 	<script type="text/javascript">
-		function logout(){
 
-  			window.location.href = "index.php";
-		}
-		function edit_prof(){
+		function back_to_me(){
 
-  			window.location.href = "myinfo.php";
+  			window.location.href = "mainpage.php";
 		}
-		function create_proj(){
 
-  			window.location.href = "projPost.php";
-		}
-		function search(){
-
-  			window.location.href = "brief_project.php";
-		}
 
 
 	</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
 
 </head>
 <body>
@@ -47,32 +39,22 @@ require 'db.php';
 <?php
 
 
-echo "<input type='submit' value='edit profile' onClick='edit_prof()';>";
-echo "<input type='submit' value='create project' onClick='create_proj()';>";
-echo "<input type='submit' value='logout' onClick='logout()';>";
-echo "<input type='text' name='search_text' id='search_text' value=''>";
-echo "<input type='submit' value='search' onClick='search()';>";
-
-
-
-echo "<br>";
-echo "<br>";
-
-
-if(isset($_SESSION["uid"])){
-	echo "Welcome: ID ";
-	echo $_SESSION["uid"];
+if(isset($_GET["id"])){
+	echo "Welcome to ID ";
+	echo $_GET["id"];
+	echo "'page";
 	echo "<br>";
 	echo "<br>";
 
 
+echo "<input type='submit' value='back to my page' onClick='back_to_me()';>";
 
 
 /*************************************************
 1) Recent Proeject List
 **************************************************/
 
-	$recentproject_query = "SELECT *  from project where uid in (  select user1 from friendship where user2 = {$_SESSION["uid"]} )";
+	$recentproject_query = "SELECT *  from project where uid in (  select user1 from friendship where user2 = {$_GET["id"]} )";
 	// $recentproject_query = "SELECT *  from project where uid = {$_SESSION["uid"]}";
 	$recentproject_result = mysqli_query($connection,$recentproject_query);
 
@@ -114,8 +96,8 @@ if(isset($_SESSION["uid"])){
     		echo "<td>" . $row['minamount'] . "</td>";
     		echo "<td>" . $row['maxamount'] . "</td>";
 
-    		#echo "<td>" . $row['uid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['uid'].'">'.$row['uid'].'</a></td>';
+    		echo "<td>" . $row['uid'] . "</td>";
+    		// echo '<td><a href="userpage.php?id='.$row['uid'].'">'.$row['uid'].'</a></td>';
     		echo "<td>" . $row['fundDdl'] . "</td>";
     		echo "<td>" . $row['projDdl'] . "</td>";
     		echo "<td>" . $row['category'] . "</td>";
@@ -131,7 +113,7 @@ if(isset($_SESSION["uid"])){
 2) Recent Comments
 **************************************************/
 
-	$recentcomment_query = "SELECT *  from comment where uid in (  select user1 from friendship where user2 = {$_SESSION["uid"]} )";
+	$recentcomment_query = "SELECT *  from comment where uid in (  select user1 from friendship where user2 = {$_GET["id"]} )";
 
 	$recentcomment_result = mysqli_query($connection,$recentcomment_query);
 
@@ -150,8 +132,7 @@ if(isset($_SESSION["uid"])){
 	{
 			echo "<tr>";
     		echo "<td>" . $row['pid'] . "</td>";
-    		#echo "<td>" . $row['uid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['uid'].'">'.$row['uid'].'</a></td>';
+    		echo "<td>" . $row['uid'] . "</td>";
     		echo "<td>" . $row['posttime'] . "</td>";
     		echo "<td>" . $row['comm'] . "</td>";
     		echo "</tr>";
@@ -163,7 +144,7 @@ if(isset($_SESSION["uid"])){
 3) Recent Pledges
 **************************************************/
 
-	$recentpledges_query = "SELECT *  from fund where uid in (  select user1 from friendship where user2 = {$_SESSION["uid"]} )";
+	$recentpledges_query = "SELECT *  from fund where uid in (  select user1 from friendship where user2 = {$_GET["id"]} )";
 	$recentpledges_result = mysqli_query($connection,$recentpledges_query);
 
 
@@ -183,8 +164,7 @@ if(isset($_SESSION["uid"])){
 	{
 			echo "<tr>";
     		echo "<td>" . $row['fid'] . "</td>";
-    		#echo "<td>" . $row['uid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['uid'].'">'.$row['uid'].'</a></td>';
+    		echo "<td>" . $row['uid'] . "</td>";
     		echo "<td>" . $row['pid'] . "</td>";
     		echo "<td>" . $row['famount'] . "</td>";
     		echo "<td>" . $row['fstate'] . "</td>";
@@ -199,7 +179,7 @@ if(isset($_SESSION["uid"])){
 **************************************************/
 
 
-	$recentLike_query = "SELECT project.pid  as ppid,pname,minamount,maxamount,project.uid as puid,fundDdl, projDdl, category, tags, description, likePj.uid as luid  from project right join likePj on project.pid = likePj.pid where likePj.uid in ( select user1 from friendship where user2 = {$_SESSION["uid"]} )";
+	$recentLike_query = "SELECT project.pid  as ppid,pname,minamount,maxamount,project.uid as puid,fundDdl, projDdl, category, tags, description, likePj.uid as luid  from project right join likePj on project.pid = likePj.pid where likePj.uid in ( select user1 from friendship where user2 = {$_GET["id"]} )";
 	$recentLike_result = mysqli_query($connection,$recentLike_query);
 
 
@@ -226,15 +206,13 @@ if(isset($_SESSION["uid"])){
     		echo "<td>" . $row['pname'] . "</td>";
     		echo "<td>" . $row['minamount'] . "</td>";
     		echo "<td>" . $row['maxamount'] . "</td>";
-    		#echo "<td>" . $row['puid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['puid'].'">'.$row['puid'].'</a></td>';
+    		echo "<td>" . $row['puid'] . "</td>";
     		echo "<td>" . $row['fundDdl'] . "</td>";
     		echo "<td>" . $row['projDdl'] . "</td>";
     		echo "<td>" . $row['category'] . "</td>";
     		echo "<td>" . $row['tags'] . "</td>";
     		echo "<td>" . $row['description'] . "</td>";
-    		#echo "<td>" . $row['luid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['luid'].'">'.$row['luid'].'</a></td>';
+    		echo "<td>" . $row['luid'] . "</td>";
     		echo "</tr>";
 
 	};
@@ -245,7 +223,7 @@ if(isset($_SESSION["uid"])){
 **************************************************/
 
 
-	$mypledges_query = "SELECT *  from fund where uid ={$_SESSION["uid"]}";
+	$mypledges_query = "SELECT *  from fund where uid ={$_GET["id"]}";
 	$mypledges_result = mysqli_query($connection,$mypledges_query);
 
 		echo "<table border ='1'>
@@ -263,8 +241,7 @@ if(isset($_SESSION["uid"])){
 	{
 			echo "<tr>";
     		echo "<td>" . $row['fid'] . "</td>";
-    		#echo "<td>" . $row['uid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['uid'].'">'.$row['uid'].'</a></td>';
+    		echo "<td>" . $row['uid'] . "</td>";
     		echo "<td>" . $row['pid'] . "</td>";
     		echo "<td>" . $row['famount'] . "</td>";
     		echo "<td>" . $row['fstate'] . "</td>";
@@ -278,7 +255,7 @@ if(isset($_SESSION["uid"])){
 /**************************************************
 6) My Pledge rate
 **************************************************/
-	$mypledgesrate_query = "SELECT *  from sponRate where uid ={$_SESSION["uid"]}";
+	$mypledgesrate_query = "SELECT *  from sponRate where uid ={$_GET["id"]}";
 	$mypledgesrate_result = mysqli_query($connection,$mypledgesrate_query);
 
 		echo "<table border ='1'>
@@ -307,7 +284,7 @@ if(isset($_SESSION["uid"])){
 /**************************************************
 7) recommend
 **************************************************/
-	$rec_keyword_query = "SELECT keyword  from keywordHistory where uid ={$_SESSION["uid"]}";
+	$rec_keyword_query = "SELECT keyword  from keywordHistory where uid ={$_GET["id"]}";
 	$rec_keyword_result = mysqli_query($connection,$rec_keyword_query);
 
 	// $rowcount=mysqli_num_rows($rec_result);
@@ -324,7 +301,7 @@ if(isset($_SESSION["uid"])){
 	#echo $likes;
 	#echo $new_like;
 
-	$rec_tag_query = "SELECT tag  from tagHistory where uid ={$_SESSION["uid"]}";
+	$rec_tag_query = "SELECT tag  from tagHistory where uid ={$_GET["id"]}";
 	$rec_tag_result = mysqli_query($connection,$rec_tag_query);
 
 
@@ -336,7 +313,7 @@ if(isset($_SESSION["uid"])){
 
 	}
 	$new_like = rtrim($likes,"| ");
-	#echo $new_like;
+	echo $new_like;
 
 
 	$rec_query = "SELECT * from project where (pname REGEXP '$new_like'  or category REGEXP '$new_like' or tags REGEXP '$new_like' or description REGEXP '$new_like' ) and pjstate='incomplete'";
@@ -361,6 +338,8 @@ if(isset($_SESSION["uid"])){
 		<th>Description</th>
 		</tr>";
 
+
+
 	while($row = mysqli_fetch_array($rec_result))
 	{
 			echo "<tr>";
@@ -368,8 +347,7 @@ if(isset($_SESSION["uid"])){
     		echo "<td>" . $row['pname'] . "</td>";
     		echo "<td>" . $row['minamount'] . "</td>";
     		echo "<td>" . $row['maxamount'] . "</td>";
-    		#echo "<td>" . $row['uid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['uid'].'">'.$row['uid'].'</a></td>';
+    		echo "<td>" . $row['uid'] . "</td>";
     		echo "<td>" . $row['fundDdl'] . "</td>";
     		echo "<td>" . $row['projDdl'] . "</td>";
     		echo "<td>" . $row['category'] . "</td>";
@@ -386,33 +364,10 @@ if(isset($_SESSION["uid"])){
 
 
 
-
-
-
-
-
 ?>
-
-
 
 
 
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
