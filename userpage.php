@@ -1,7 +1,7 @@
 <?php
 session_start();
-#echo "userpage test";
-#echo $_GET["id"];
+echo "userpage test";
+echo $_GET["id"];
 require 'db.php';
 
 ?>

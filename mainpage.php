@@ -46,7 +46,7 @@ echo "<input type='submit' value='edit profile' onClick='edit_prof()';>";
 echo "<input type='submit' value='create project' onClick='create_proj()';>";
 echo "<input type='submit' value='logout' onClick='logout()';>";
 
-echo "<form method='POST' action='brief_project_from_search.html'>";
+echo "<form method='POST' action='brief_project_from_search.php'>";
 echo "<input type='text' name='searchtext' >";
 echo "<input type='submit' value='search'>";
 echo "</form>";
@@ -115,7 +115,8 @@ if(isset($_SESSION["uid"])){
     		echo '<td><a href="userpage.php?id='.$row['uid'].'">'.$row['uid'].'</a></td>';
     		echo "<td>" . $row['fundDdl'] . "</td>";
     		echo "<td>" . $row['projDdl'] . "</td>";
-    		echo "<td>" . $row['category'] . "</td>";
+    		#echo "<td>" . $row['category'] . "</td>";
+    		echo '<td><a href="brief_project_from_category.php?category='.$row['category'].'">'.$row['category'].'</a></td>';
     		echo "<td>" . $row['tags'] . "</td>";
     		echo "<td>" . $row['description'] . "</td>";
     		echo "</tr>";

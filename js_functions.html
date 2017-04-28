@@ -10,17 +10,6 @@
 
 <script type="text/javascript">
 
-$(function(){
-	$.get("brief_project_from_search.php" , function(data){
-		$("#disp").append(data);
-		// alert(data);
-	});
-})
-
-</script>
-
-<script type="text/javascript">
-
 function detailed_projects(test){
 		// console.log($(test)[0].parentElement.parentElement.childNodes[0].innerHTML); 
 
@@ -28,15 +17,6 @@ function detailed_projects(test){
   		window.location.href = "detailed_projects.php?prjID=" + prjID;
 	}
 </script>
-
-
-
-
-
-<table >
-	<tbody id="disp"></tbody>
-</table>
-
 
 
 
