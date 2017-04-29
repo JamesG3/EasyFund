@@ -19,7 +19,7 @@ require 'db.php';
 	<script type="text/javascript">
 		function logout(){
 
-  			window.location.href = "index.php";
+  			window.location.href = "logout.php";
 		}
 		function edit_prof(){
 
@@ -112,6 +112,8 @@ if(isset($_SESSION["uid"])){
 		<th>Tags</th>
 		</tr>";
 
+if($recentproject_result){
+
 	while($row = mysqli_fetch_array($recentproject_result))
 	{
 
@@ -146,7 +148,7 @@ if(isset($_SESSION["uid"])){
     		echo "</tr>";
 
 	}; 
-
+}
 
 
 /**************************************************
@@ -174,6 +176,8 @@ if(isset($_SESSION["uid"])){
 		<th>Commented By</th>
 		</tr>";
 
+if($recentcomment_result){
+
 	while($row = mysqli_fetch_array($recentcomment_result))
 	{
 			echo "<tr>";
@@ -198,6 +202,7 @@ if(isset($_SESSION["uid"])){
     		echo "</tr>";
 
 	}; 
+}
 
 
 /**************************************************
@@ -220,6 +225,7 @@ if(isset($_SESSION["uid"])){
 		<th>Fund state</th>
 		</tr>";
 
+if($recentpledges_result){
 	while($row = mysqli_fetch_array($recentpledges_result))
 	{
 			echo "<tr>";
@@ -233,7 +239,8 @@ if(isset($_SESSION["uid"])){
     		#echo "<td>" . $row['chargeTime'] . "</td>";
     		echo "</tr>";
 
-	}; 
+	};
+} 
 
 
 /**************************************************
@@ -255,6 +262,7 @@ if(isset($_SESSION["uid"])){
 		<th>Tags</th>
 		<th>Like By</th>
 		</tr>";
+if($recentLike_result){
 
 	while($row = mysqli_fetch_array($recentLike_result))
 	{
@@ -286,6 +294,7 @@ if(isset($_SESSION["uid"])){
     		echo "</tr>";
 
 	};
+}
 
 
 /**************************************************
@@ -310,6 +319,7 @@ if(isset($_SESSION["uid"])){
 		<th>Charge Time</th>
 		</tr>";
 
+if($mypledges_result){
 	while($row = mysqli_fetch_array($mypledges_result))
 	{
 			echo "<tr>";
@@ -324,7 +334,7 @@ if(isset($_SESSION["uid"])){
     		echo "</tr>";
 
 	}; 
-
+}
 
 
 /**************************************************
@@ -349,6 +359,7 @@ if(isset($_SESSION["uid"])){
 		<th>Owner's feedback</th>
 		</tr>";
 
+if($mypledgesrate_result){
 	while($row = mysqli_fetch_array($mypledgesrate_result))
 	{
 			echo "<tr>";
@@ -361,7 +372,8 @@ if(isset($_SESSION["uid"])){
     		echo "<td>" . $row['owner_review'] . "</td>";
     		echo "</tr>";
 
-	}; 
+	};
+} 
 
 
 /**************************************************
@@ -416,6 +428,7 @@ if(isset($_SESSION["uid"])){
 		<th>Tags</th>
 		</tr>";
 
+if($rec_result){
 	while($row = mysqli_fetch_array($rec_result))
 	{
 			echo "<tr>";
@@ -445,7 +458,7 @@ if(isset($_SESSION["uid"])){
 
 	}; 
 
-
+}
 
 }
 
