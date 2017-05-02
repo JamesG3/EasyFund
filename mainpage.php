@@ -32,6 +32,55 @@ require 'db.php';
 
 
 	</script>
+
+<style type="text/css">
+	caption {
+    text-align: center;
+    /*margin-bottom: 5px;*/
+    /*margin-left: 10px;*/
+    /*text-transform: lowercase;*/
+    font-size: 140%;
+    padding: 5px;
+    /*letter-spacing: 10px;*/
+    font-weight: bold;
+	}
+	table{
+		margin: 0 auto;
+		margin-bottom: 20px;
+		border:1px solid #000;
+	}
+	td{
+		text-align:center; 
+		border: none;
+		max-width: 250px;
+
+	}
+	#edit {
+		/*float: left;*/
+		margin-left: 15px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	#create_proj {
+		margin-left: 5px;
+		margin-top: 10px;
+
+	}
+	#search_box {
+		float: top;
+		margin-left: 15px;
+		width: 110px;
+	}
+	#searchs {
+		padding-left: 5px;
+	}
+	#logout{
+		margin-top: 10px;
+		float: right;
+		margin-right: 25px;
+	}
+</style>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 
@@ -42,14 +91,19 @@ require 'db.php';
 <?php
 
 
-echo "<input type='submit' value='edit profile' onClick='edit_prof()';>";
-echo "<input type='submit' value='create project' onClick='create_proj()';>";
-echo "<input type='submit' value='logout' onClick='logout()';>";
+// echo "<input type='submit' value='edit profile' onClick='edit_prof()';>";
+// echo "<input type='submit' value='create project' onClick='create_proj()';>";
+// echo "<input type='submit' value='logout' onClick='logout()';>";
+
+echo "<input id='edit' type='submit' value='Edit Profile' onClick='edit_prof()';>";
+echo "<input id = 'create_proj' type='submit' value='Create Project' onClick='create_proj()';>";
+echo "<input id = 'logout' type='submit' value='logout' onClick='logout()';>";
 
 echo "<form method='POST' action='brief_project_from_search.php'>";
-echo "<input type='text' name='searchtext' >";
-echo "<input type='submit' value='search'>";
+echo "<input id = 'search_box' type='text' name='searchtext' >";
+echo "<input id = 'searchs' type='submit' value='Search'>";
 echo "</form>";
+
 
 
 echo "<br>";
@@ -57,10 +111,10 @@ echo "<br>";
 
 
 if(isset($_SESSION["uid"])){
-	echo "Welcome: ID ";
-	echo $_SESSION["uid"];
-	echo "<br>";
-	echo "<br>";
+	// echo "Welcome: ID ";
+	// echo $_SESSION["uid"];
+	// echo "<br>";
+	// echo "<br>";
 
 
 
@@ -102,8 +156,8 @@ if(isset($_SESSION["uid"])){
 		// <th>Tags</th>
 		// <th>Description</th>
 		// </tr>";
-		echo "<table border ='1'>
-		<th>Recent Projects List</th>
+		echo "<table>
+		<caption>Recent Projects List</caption>
 		<tr>
 		<th>Project Name</th>
 		<th>Owner ID</th>
@@ -164,8 +218,8 @@ if($recentproject_result){
 
 
 
-		echo "<table border ='1'>
-		<th>Recent Comments</th>
+		echo "<table>
+		<caption>Recent Comments</caption>
 		<tr>
 		<th>Project Name</th>
 		<th>Owner ID</th>
@@ -216,8 +270,8 @@ if($recentcomment_result){
 
 
 
-		echo "<table border ='1'>
-		<th>Recent Pledges</th>
+		echo "<table>
+		<caption>Recent Pledges</caption>
 		<tr>
 		<th>User ID</th>
 		<th>Project Name</th>
@@ -252,8 +306,8 @@ if($recentpledges_result){
 	$recentLike_result = mysqli_query($db,$recentLike_query);
 
 
-		echo "<table border ='1'>
-		<th>Recent Likes</th>
+		echo "<table>
+		<caption>Recent Likes</caption>
 		<tr>
 		<th>Project Name</th>
 		<th>Owner ID</th>
@@ -309,8 +363,8 @@ if($recentLike_result){
 	// $mypledges_query = "SELECT *  from fund where uid ={$_SESSION["uid"]}";
 	$mypledges_result = mysqli_query($db,$mypledges_query);
 
-		echo "<table border ='1'>
-		<th>My Pledges</th>
+		echo "<table>
+		<caption>My Pledges</caption>
 		<tr>
 		<th>Project Name</th>
 		<th>Owner ID</th>
@@ -348,8 +402,8 @@ if($mypledges_result){
 	// $mypledgesrate_query = "SELECT *  from sponRate where uid ={$_SESSION["uid"]}";
 	$mypledgesrate_result = mysqli_query($db,$mypledgesrate_query);
 
-		echo "<table border ='1'>
-		<th>My Rate</th>
+		echo "<table>
+		<caption>My Rate</caption>
 		<tr>
 		<th>Project Name</th>
 		<th>Owner ID</th>
@@ -382,7 +436,7 @@ if($mypledgesrate_result){
 	$rec_keyword_query = "SELECT keyword  from keywordHistory where uid ={$_SESSION["uid"]}";
 	$rec_keyword_result = mysqli_query($db,$rec_keyword_query);
 
-	// $rowcount=mysqli_num_rows($rec_result);
+	// $rowcount=mysqli_num_rows($rec_keyword_result);
 	// echo "count:";
 	// echo $rowcount;
 
@@ -392,9 +446,9 @@ if($mypledgesrate_result){
 		$likes .= $row['keyword']. "|";
 
 	}
-	#$new_like = rtrim($likes,"| ");
-	#echo $likes;
-	#echo $new_like;
+	// $new_like = rtrim($likes,"| ");
+	// echo $likes;
+	// echo $new_like;
 
 	$rec_tag_query = "SELECT tag  from tagHistory where uid ={$_SESSION["uid"]}";
 	$rec_tag_result = mysqli_query($db,$rec_tag_query);
@@ -418,8 +472,8 @@ if($mypledgesrate_result){
 	// echo "count:";
 	// echo $rowcount;
 
-		echo "<table border ='1'>
-		<th>Recommend List</th>
+		echo "<table>
+		<caption>Recommend List</caption>
 		<tr>
 		<th>Project Name</th>
 		<th>Owner ID</th>

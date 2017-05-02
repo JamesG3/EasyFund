@@ -7,35 +7,77 @@ require 'js_functions.html';
 date_default_timezone_set('America/New_York');
 
 
-echo "test:    ";
-echo $_GET["category"];
-echo $_SESSION["uid"];
+// echo "test:    ";
+// echo $_GET["category"];
+// echo $_SESSION["uid"];
 
 ?>
 
 <!DOCTYPE html>
-
-
 <html>
 <head>
-	<title>MainPage</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<title></title>
 
+		<script type="text/javascript">
+
+		function back_to_me(){
+
+  			window.location.href = "mainpage.php";
+		}
+
+
+
+	</script>
+
+<style type="text/css">
+	caption {
+    text-align: center;
+    /*margin-bottom: 5px;*/
+    /*margin-left: 10px;*/
+    /*text-transform: lowercase;*/
+    font-size: 140%;
+    padding: 5px;
+    /*letter-spacing: 10px;*/
+    font-weight: bold;
+	}
+	table{
+		margin: 0 auto;
+		margin-bottom: 20px;
+		border:1px solid #000;
+	}
+	td{
+		text-align:center; 
+		border: none;
+		max-width: 200px;
+
+	}
+	#back {
+		/*float: left;*/
+		margin-left: 15px;
+		margin-top: 10px;
+		margin-bottom: 20px;
+	}
+
+
+</style>
 </head>
 <body>
+
+</body>
+</html>
 
 
 <?php
 
 
-
+	echo "<input id = 'back' type='submit' value='back to my page' onClick='back_to_me()';>";
 
 	$search_query = "SELECT *  FROM project  where category = '{$_GET["category"]}'";
 	$search_result = mysqli_query($db,$search_query);
 
 
-		echo "<table border ='1'>
-		<th>Projects List</th>
+		echo "<table>
+		<caption>Projects List</caption>
 		<tr>
 		<th>Project Name</th>
 		<th>Owner ID</th>
@@ -88,9 +130,9 @@ if($search_result){
 	$insert_tag = "INSERT into tagHistory (uid, tag, searchTagTime) values ('{$_SESSION["uid"]}', '{$_GET["category"]}', '$currenttime')";
 
 	if(mysqli_query($db, $insert_tag)) {
-		echo "Congratulations ";
-		echo ":  ";
-    	echo "New record created successfully";
+		// echo "Congratulations ";
+		// echo ":  ";
+  //   	echo "New record created successfully";
 		}
 	else{
     	echo "Error: " . $sql . "<br>" . mysqli_error($db);
@@ -98,6 +140,3 @@ if($search_result){
 
 ?>
 
-	
-</body>
-</html>
