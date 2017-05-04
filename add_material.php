@@ -1,11 +1,11 @@
 <?php
-#session_start();
+session_start();
 
 	date_default_timezone_set("America/New_York");
     $current_time = date("Y/m/d H:i:s");
 #if (isset($_SESSION['uid'])){
 	$uid = $_SESSION['uid'];
-	$pid = 1001;//test
+	$pid = $_SESSION["pid"];//test
 	$textdata = $_POST['textdata'];
 
 	#$db = new mysqli('127.0.0.1', 'root', 'root','easyfund') or die('Could not connect: ' . mysqli_error());
@@ -29,7 +29,7 @@ if (file_exists($file)) {
 if ($uploadOk != 0) {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $file)) {
     	$path = $file;
-        echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+        echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.\n";
     } else {
         echo "Sorry, there was an error uploading your file.";
         $uploadOk = 0;
