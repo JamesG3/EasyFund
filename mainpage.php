@@ -90,6 +90,10 @@ require 'db.php';
 
 <?php
 
+if(!$_SESSION["uid"]){
+	exit();
+}
+
 
 // echo "<input type='submit' value='edit profile' onClick='edit_prof()';>";
 // echo "<input type='submit' value='create project' onClick='create_proj()';>";

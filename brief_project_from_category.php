@@ -69,6 +69,10 @@ date_default_timezone_set('America/New_York');
 
 <?php
 
+if(!$_SESSION["uid"]){
+	exit();
+}
+
 
 	echo "<input id = 'back' type='submit' value='back to my page' onClick='back_to_me()';>";
 

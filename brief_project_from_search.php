@@ -69,6 +69,10 @@ date_default_timezone_set('America/New_York');
 
 <?php
 
+if(!$_SESSION["uid"]){
+	exit();
+}
+
 // if($_POST["searchtext"] == ''){
 
 // 	echo "kong";
