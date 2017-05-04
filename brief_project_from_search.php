@@ -91,7 +91,6 @@ if($_POST["searchtext"] != ''){
 		<th>fund Deadline</th>
 		<th>Category</th>
 		<th>Tags</th>
-		<th>Details</th>
 		</tr>";
 if($search_result){
 
@@ -126,7 +125,7 @@ if($search_result){
 			echo "</td>";
 
     		#echo "<td>" . $row['description'] . "</td>";
-    		echo "<td><input type='submit' value='See Details' onClick='detailed_projects(this)';></td>";
+    		// echo "<td><input type='submit' value='See Details' onClick='detailed_projects(this)';></td>";
     		echo "</tr>";
 
 	};
@@ -158,7 +157,6 @@ if($_POST["searchtext"] == ''){
 		<th>fund Deadline</th>
 		<th>Category</th>
 		<th>Tags</th>
-		<th>Details</th>
 		</tr>";
 if($search_result){
 
@@ -193,7 +191,7 @@ if($search_result){
 			echo "</td>";
 
     		#echo "<td>" . $row['description'] . "</td>";
-    		echo "<td><input type='submit' value='See Details' onClick='detailed_projects(this)';></td>";
+    		// echo "<td><input type='submit' value='See Details' onClick='detailed_projects(this)';></td>";
     		echo "</tr>";
 
 	};

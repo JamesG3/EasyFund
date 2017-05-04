@@ -57,6 +57,9 @@ require 'db.php';
 		margin-top: 10px;
 		margin-bottom: 20px;
 	}
+	form {
+		margin-left: 15px;
+	}
 
 
 </style>
@@ -79,6 +82,32 @@ if(isset($_GET["id"])){
 
 
 echo "<input id = 'back' type='submit' value='back to my page' onClick='back_to_me()';>";
+
+
+$follow_query = "SELECT * from friendship where user1 = '{$_GET["id"]}' and user2 = '{$_SESSION['uid']}'";
+
+$follow_result = mysqli_query($db,$follow_query);
+
+// echo $_GET['id'];
+// echo $_SESSION['uid'];
+
+$rowcount=mysqli_num_rows($follow_result);
+// echo "count:";
+// echo $rowcount;
+
+if($rowcount == 0){
+	// echo "<input id = 'back' type='submit' value='follow' onClick='follow()';>";
+	echo "<form method='POST' action='follow.php'>";
+	echo "<input type='hidden' name='varname' value= '{$_GET["id"]}' >";
+	echo "<input id = 'searchs' type='submit' value='follow'>";
+	echo "</form>";
+}
+if($rowcount != 0){
+	echo "<form method='POST' action='unfollow.php'>";
+	echo "<input type='hidden' name='varname' value= '{$_GET["id"]}' >";
+	echo "<input id = 'searchs' type='submit' value='unfollow'>";
+	echo "</form>";
+}
 
 
 /*************************************************

@@ -349,7 +349,61 @@ if($recentLike_result){
 
 	};
 }
+/**************************************************
+4.5) My Project
+**************************************************/
 
+$myproject_query = "SELECT *  from project where uid = {$_SESSION["uid"]} ";
+
+$myproject_result = mysqli_query($db,$myproject_query);
+
+		echo "<table>
+		<caption>My Projects List</caption>
+		<tr>
+		<th>Project Name</th>
+		<th>Owner ID</th>
+		<th>fund Deadline</th>
+		<th>Category</th>
+		<th>Tags</th>
+		</tr>";
+
+if($myproject_result){
+
+	while($row = mysqli_fetch_array($myproject_result))
+	{
+
+
+
+			echo "<tr>";
+    		#echo "<td>" . $row['pid'] . "</td>";
+    		#echo "<td>" . $row['pname'] . "</td>";
+    		echo '<td><a href="detailed_projects.php?prjID='.$row['pid'].'">'.$row['pname'].'</a></td>';
+    		#echo "<td>" . $row['minamount'] . "</td>";
+    		#echo "<td>" . $row['maxamount'] . "</td>";
+
+    		#echo "<td>" . $row['uid'] . "</td>";
+    		echo '<td><a href="userpage.php?id='.$row['uid'].'">'.$row['uid'].'</a></td>';
+    		echo "<td>" . $row['fundDdl'] . "</td>";
+    		#echo "<td>" . $row['projDdl'] . "</td>";
+    		#echo "<td>" . $row['category'] . "</td>";
+    		echo '<td><a href="brief_project_from_category.php?category='.$row['category'].'">'.$row['category'].'</a></td>';
+
+    		#echo "<td>" . $row['tags'] . "</td>";
+    		echo "<td>";
+
+			$tagsArray = explode(',', $row['tags']);
+			foreach($tagsArray as $tag) {
+    			#echo $tag.' '; // print each link etc
+    			echo '<a href="brief_project_from_tag.php?tag='.$tag.'">'.$tag.'</a>';
+    			echo "  ";
+			}
+			echo "</td>";
+
+    		#echo "<td>" . $row['description'] . "</td>";
+    		echo "</tr>";
+
+	}; 
+}
 
 /**************************************************
 5) My Pledge
