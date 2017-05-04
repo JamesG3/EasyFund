@@ -27,7 +27,6 @@ if (isset($_SESSION['uid'])){
 			<td><strong>project name</strong></td>
 			<td><strong>category</strong></td>
 			<td><strong>tags</strong></td>
-			<td><strong>uid</strong></td>
 			<td><strong>minimum amount</strong></td>
 			<td><strong>maximum amount</strong></td>
 			<td><strong>current pledge</strong></td>
@@ -65,7 +64,6 @@ if (isset($_SESSION['uid'])){
 		<td name = "pname"> <?php echo "{$row['pname']}" ?> </td>
 		<td name = "category"> <?php echo "{$row['category']}" ?> </td>
 		<td name = "tags"> <?php echo "{$row['tags']}" ?> </td>
-		<td name = "uid"> <?php echo "{$row['uid']}"; $puid = $row['uid'];?> </td>
 		<td name = "minamount"> <?php echo "{$row['minamount']}" ?> </td>
 		<td name = "maxamount"> <?php echo "{$row['maxamount']}" ?> </td>
 		<td name = "curramount"> <?php echo "{$row['current_amount']}" ?> </td>
@@ -93,6 +91,7 @@ if (isset($_SESSION['uid'])){
 	</tr>
 	<?php
 	}
+
 	$getmaterial = "SELECT * from material WHERE pid = ";
 	$getmaterial .= "'".$_SESSION['pid']."'";
 	$getmaterial .= "ORDER by materialtime desc";
@@ -258,19 +257,6 @@ if (isset($_SESSION['uid'])){
     		echo "<table align = 'center'><tr><td>You've rated this project!</td></tr></table>";
     	}
 		}
-
-	if ($uid == $puid){
-		?>
-	<form method="POST" action="addMaterial.php">
-		<table align = "center">
-			<tr>
-				<td><p align=center><input type="submit" value="Add material"></td>
-			</tr>
-		</table>
-	</form>
-
-		<?php
-	}
 
 	}
 

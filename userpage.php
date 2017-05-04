@@ -73,6 +73,8 @@ require 'db.php';
 <?php
 
 if(!$_SESSION["uid"]){
+	echo "You are not allow to access this page after log-out";
+
 	exit();
 }
 

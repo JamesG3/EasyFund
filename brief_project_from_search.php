@@ -70,6 +70,8 @@ date_default_timezone_set('America/New_York');
 <?php
 
 if(!$_SESSION["uid"]){
+	echo "You are not allow to access this page after log-out";
+
 	exit();
 }
 
