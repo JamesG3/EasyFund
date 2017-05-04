@@ -79,6 +79,10 @@ require 'db.php';
 		float: right;
 		margin-right: 25px;
 	}
+	h2{
+		margin-top: -30px;
+		margin-left: 15px;
+	}
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -101,14 +105,14 @@ if(!$_SESSION["uid"]){
 // echo "<input type='submit' value='create project' onClick='create_proj()';>";
 // echo "<input type='submit' value='logout' onClick='logout()';>";
 
-echo "<input id='edit' type='submit' value='Edit Profile' onClick='edit_prof()';>";
-echo "<input id = 'create_proj' type='submit' value='Create Project' onClick='create_proj()';>";
-echo "<input id = 'logout' type='submit' value='logout' onClick='logout()';>";
+// echo "<input id='edit' type='submit' value='Edit Profile' onClick='edit_prof()';>";
+// echo "<input id = 'create_proj' type='submit' value='Create Project' onClick='create_proj()';>";
+// echo "<input id = 'logout' type='submit' value='logout' onClick='logout()';>";
 
-echo "<form method='POST' action='brief_project_from_search.php'>";
-echo "<input id = 'search_box' type='text' name='searchtext' >";
-echo "<input id = 'searchs' type='submit' value='Search'>";
-echo "</form>";
+// echo "<form method='POST' action='brief_project_from_search.php'>";
+// echo "<input id = 'search_box' type='text' name='searchtext' >";
+// echo "<input id = 'searchs' type='submit' value='Search'>";
+// echo "</form>";
 
 
 
@@ -122,6 +126,28 @@ if(isset($_SESSION["uid"])){
 	// echo "<br>";
 	// echo "<br>";
 
+	$query = "SELECT username FROM user where uid = '{$_SESSION["uid"]}'";
+	$res = $db->query($query);
+
+	if (!$res){
+   	echo "Something wrong!!";
+   	showerror();				# if query faild, show error message.
+   	}
+
+   	while ($row = $res->fetch_assoc()){
+    $username = $row['username'];
+    }
+
+    echo "<h2>Hi  ".$username."</h2>" ;
+
+	echo "<input id='edit' type='submit' value='Edit Profile' onClick='edit_prof()';>";
+	echo "<input id = 'create_proj' type='submit' value='Create Project' onClick='create_proj()';>";
+	echo "<input id = 'logout' type='submit' value='logout' onClick='logout()';>";
+
+	echo "<form method='POST' action='brief_project_from_search.php'>";
+	echo "<input id = 'search_box' type='text' name='searchtext' >";
+	echo "<input id = 'searchs' type='submit' value='Search'>";
+	echo "</form>";
 
 
 

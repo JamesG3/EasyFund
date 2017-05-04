@@ -85,7 +85,19 @@ if(isset($_GET["id"])){
 	// echo "'page";
 	// echo "<br>";
 	// echo "<br>";
+	$query = "SELECT username FROM user where uid = '{$_GET["id"]}'";
+	$res = $db->query($query);
 
+	if (!$res){
+   	echo "Something wrong!!";
+   	showerror();				# if query faild, show error message.
+   	}
+
+   	while ($row = $res->fetch_assoc()){
+    $username = $row['username'];
+    }
+
+    echo "<h2>Welcome to  ".$username."'s Page</h2>" ;
 
 echo "<input id = 'back' type='submit' value='back to my page' onClick='back_to_me()';>";
 
@@ -354,7 +366,7 @@ $myproject_query = "SELECT *  from project where uid = {$_GET["id"]} ";
 $myproject_result = mysqli_query($db,$myproject_query);
 
 		echo "<table>
-		<caption>My Projects List</caption>
+		<caption>".$username."'s Projects List</caption>
 		<tr>
 		<th>Project Name</th>
 		<th>Owner ID</th>
@@ -414,7 +426,7 @@ if($myproject_result){
 	$mypledges_result = mysqli_query($db,$mypledges_query);
 
 		echo "<table>
-		<caption>My Pledges</caption>
+		<caption>".$username."'s Pledges</caption>
 		<tr>
 		<th>Project Name</th>
 		<th>Owner ID</th>
@@ -453,7 +465,7 @@ if($mypledges_result){
 	$mypledgesrate_result = mysqli_query($db,$mypledgesrate_query);
 
 		echo "<table>
-		<caption>My Rate</caption>
+		<caption>".$username."'s Rate</caption>
 		<tr>
 		<th>Project Name</th>
 		<th>Owner ID</th>
