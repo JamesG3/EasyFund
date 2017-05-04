@@ -1,5 +1,9 @@
 <?php
 session_start();
+require 'style.php';
+
+if (isset($_SESSION['uid'])){
+
 ?>
 <html>
 <head>
@@ -56,3 +60,8 @@ session_start();
 </html>
 
 <?php
+}
+
+else{
+  echo "Dude you are not authorized to access this page!";
+}

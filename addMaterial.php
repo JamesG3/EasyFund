@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-#if (isset($_SESSION['uid'])){
+if (isset($_SESSION['uid'])){
 ?>
 <html>
 <head>
@@ -20,18 +20,16 @@ session_start();
     <td>Or write something:</td>
     <td><textarea id = "input" rows=10 cols=40 name="textdata"></textarea></td>
   </tr>
-  <tr clospan = "2"><td><input type="submit" value="Upload material" name="upload"></td></tr>
-
-
 </table>
+<p align=center><input type="submit" value="Upload these material" name = "upload">
 
 </form>
 </body>
 </html>
 
 <?php
-#}
+}
 
-#else{
-#  echo "dude you cannot access this page without login!";
-#}
+else{
+  echo "dude you cannot access this page without login!";
+}

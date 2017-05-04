@@ -1,5 +1,6 @@
 <?php
     session_start();
+    if (isset($_SESSION['uid'])){
 
     date_default_timezone_set("America/New_York");
     $current_time = date("Y/m/d H:i:s");
@@ -71,6 +72,13 @@
   <form action="mainpage.php">
     <p align=center><input type="submit" value="back to main page">
   </form>
+
+  <?php
+  }
+
+  else{
+    echo "Dude you are not authorized to access this page!";
+  }
 
 
 

@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+date_default_timezone_set("America/New_York");
+$current_time = date("Y/m/d H:i:s");
+
 
 if (isset($_SESSION['uid'])){
 	$uid = $_SESSION['uid'];
@@ -18,7 +21,9 @@ if (isset($_SESSION['uid'])){
     $username = $row['username'];
     }
 
+	require 'style.php';
 	?>
+
 	<html>
 	<body>
 		<h2>Hi <?php echo $username ?>
@@ -62,7 +67,7 @@ if (isset($_SESSION['uid'])){
 	?>
 	<tr>
 		<td name = "pname"> <?php echo "{$row['pname']}" ?> </td>
-		<td name = "category"> <?php echo "{$row['category']}" ?> </td>
+		<td name = "category"> <?php echo "{$row['category']}"; $category = $row['category'] ;?> </td>
 		<td name = "tags"> <?php echo "{$row['tags']}" ?> </td>
 		<td name = "minamount"> <?php echo "{$row['minamount']}" ?> </td>
 		<td name = "maxamount"> <?php echo "{$row['maxamount']}" ?> </td>
@@ -92,6 +97,25 @@ if (isset($_SESSION['uid'])){
 	<?php
 	}
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+
+
+	#add category into history table
+	$addHistory = $db->prepare("INSERT INTO tagHistory (`uid`, `tag`, `searchTagTime`) VALUES (?,?,?)");
+    $addHistory->bind_param("iss", $uid, $category, $current_time);
+    $addHistory->execute();
+    #echo "You have successfully rate this project!";
+
+
+
+
+
+	#list all materials for this project
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 	$getmaterial = "SELECT * from material WHERE pid = ";
 	$getmaterial .= "'".$_SESSION['pid']."'";
 	$getmaterial .= "ORDER by materialtime desc";
@@ -247,7 +271,8 @@ if (isset($_SESSION['uid'])){
     		}
     		else if(($pjstate == 'complete')){
     		echo "<form action='rateproj.php'>
-    		<p align=center><input type='submit' value='Go to rate this project!'></form>";
+    		<table align = 'center'>
+    		<td><p align=center><input type='submit' value='Go to rate this project!'></td></table></form>";
     			}
     		else{
     		echo "<table align = 'center'><tr><td>You cannot rate this project anymore(failed)!</td></tr></table>";
@@ -258,6 +283,26 @@ if (isset($_SESSION['uid'])){
     	}
 		}
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+	# if the user is the owner of this project, show material add button
+	if ($uid == $puid){
+		?>
+	<form method="POST" action="addMaterial.php">
+		<table align = "center">
+			<tr>
+				<td><p align=center><input type="submit" value="Add material"></td>
+			</tr>
+		</table>
+	</form>
+
+		<?php
+	}
+
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 	}
 
 

@@ -2,6 +2,7 @@
     session_start();
     #$db = new mysqli('127.0.0.1', 'root', 'root','easyfund') or die('Could not connect: ' . mysqli_error());
     require 'db.php';
+if (isset($_SESSION['uid'])){
     
     #echo $_POST['pledge'];
     #echo $_SESSION['uid'];
@@ -19,5 +20,9 @@
 <?php
 
 
+}
 
 
+else{
+  echo "Dude you are not authorized to access this page!";
+}

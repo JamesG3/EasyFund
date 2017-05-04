@@ -1,9 +1,10 @@
 <?php
 session_start();
 
-	date_default_timezone_set("America/New_York");
-    $current_time = date("Y/m/d H:i:s");
-#if (isset($_SESSION['uid'])){
+date_default_timezone_set("America/New_York");
+$current_time = date("Y/m/d H:i:s");
+
+if (isset($_SESSION['uid'])){
 	$uid = $_SESSION['uid'];
 	$pid = $_SESSION["pid"];//test
 	$textdata = $_POST['textdata'];
@@ -55,12 +56,12 @@ if ($uploadOk!=0){
 }
 
 
-#}
+}
 
 
-#else{
-#		echo "Dude you are not authorized to access this page!";
-#	}
+else{
+		echo "Dude you are not authorized to access this page!";
+	}
 
 
 ?>
