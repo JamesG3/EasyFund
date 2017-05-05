@@ -7,7 +7,7 @@
     $input_email = $_POST["email"];
     $input_hometown = $_POST["hometown"];
     $input_creditcard = $_POST["creditcard"];
-    $input_password = $_POST["psw"];
+    $input_password = md5($_POST["psw"]);
     $input_interests = $_POST["interests"];
 
 

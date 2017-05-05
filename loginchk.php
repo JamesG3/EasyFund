@@ -43,7 +43,7 @@
         $uid = $row['uid'];
       }
 
-      if ($_POST["psw"] == $password){
+      if (md5($_POST["psw"]) == $password){
         #$_SESSION["username"] = $input_name;
         $_SESSION["uid"] = $uid;
         header("Location: mainpage.php");
@@ -66,7 +66,7 @@
         $password = $row['password'];
         $uid = $row['uid'];
       }
-      if ($_POST["psw"] == $password){
+      if (md5($_POST["psw"]) == $password){
         #$_SESSION["username"] = $input_name;
         $_SESSION["uid"] = $uid;
         header("Location: mainpage.php");

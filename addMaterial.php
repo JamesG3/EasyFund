@@ -7,7 +7,13 @@ if (isset($_SESSION['uid'])){
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <title>Add your material</title>
+  <input id = 'back' type='submit' value='back to my page' onClick='back_to_me()';>
 </head>
+<script type="text/javascript">
+    function back_to_me(){
+        window.location.href = "mainpage.php";
+    }
+</script> 
 <body>
 <h1 align=center>AddMaterial</h1>
 <form method="POST" action="add_material.php" enctype = "multipart/form-data">

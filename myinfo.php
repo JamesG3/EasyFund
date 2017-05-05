@@ -26,6 +26,13 @@ if (isset($_SESSION['uid'])){
 	?>
 	<html>
 	<body>
+<script type="text/javascript">
+    function back_to_me(){
+        window.location.href = "mainpage.php";
+    }
+</script>
+  		<input id = 'back' type='submit' value='back to my page' onClick='back_to_me()';>
+
 		<h1 align = "center">Profile edit</h1>
 
 	<form method="POST" action="my_info.php">

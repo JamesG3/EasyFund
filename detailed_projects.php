@@ -32,7 +32,14 @@ if (isset($_SESSION['uid'])){
 
 	<html>
 	<body>
+<script type="text/javascript">
+    function back_to_me(){
+        window.location.href = "mainpage.php";
+    }
+</script>		
 		<h2>Hi <?php echo $username ?>
+		<input id = 'back' type='submit' value='back to my page' onClick='back_to_me()';>
+
 	<table cellspacing="20" align=center>
 		<tr>
 			<td><strong>project name</strong></td>
@@ -145,11 +152,11 @@ if (isset($_SESSION['uid'])){
 
 	</table>
 
-
+<form method="POST" action="post_comment.php">
 	<table cellspacing="20" align=center>
 	<tr>
-		<td><strong>user</strong></td>
 		<td align = center><strong>comment</strong></td>
+		<td><strong>user</strong></td>
 		<td><strong>posttime</strong></td>
 	</tr>
 	<?php
@@ -167,16 +174,21 @@ if (isset($_SESSION['uid'])){
 	?>
 
 	<tr>
-		<td name = "user"> <?php echo "{$row['uid']}" ?> </td>
 		<td name = "comment"> <?php echo "{$row['comm']}" ?> </td>
+		<td name = "user"> <a href="userpage.php?id=<?php echo "{$row['uid']}" ?>"> <?php echo "{$row['uid']}" ?> </td>
 		<td name = "posttime"> <?php echo "{$row['posttime']}" ?> </td>
 	</tr>
-
 
 	<?php
 		}
 	?>
+	<tr>
+		<td><input type="text" size="30" name="new_comment" required></td>
+		<td> </td>
+		<td><input type="submit" value="post" name = "postcomment"></td>
+	</tr>
 	</table>
+</form>
 
 	<?php
 	if($pjstate == 'complete'){

@@ -9,9 +9,19 @@ if (isset($_SESSION['uid'])){
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <title>Register</title>
+  <input id = 'back' type='submit' value='back to my page' onClick='back_to_me()';>
 </head>
 <body>
 <h1 align=center>Post your Project</h1>
+
+
+<script type="text/javascript">
+    function back_to_me(){
+        window.location.href = "mainpage.php";
+    }
+</script>
+
+
 <form method="POST" action="proj_Post.php">
 
 <table align=center>
