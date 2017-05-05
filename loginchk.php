@@ -1,14 +1,18 @@
 <?php
     
-    $db = new mysqli('127.0.0.1', 'root', '123','easyfund') or die('Could not connect: ' . mysqli_error());
-
+    #$db = new mysqli('127.0.0.1', 'root', 'root','easyfund') or die('Could not connect: ' . mysqli_error());
+    require 'db.php';
     $input_name = $_POST["uname"];
 
+    $auth1 = $db->prepare("SELECT password, uid FROM user where username = ?");
+    $auth1->bind_param("s", $input_name);
+    $auth1->execute();
+    $authen1 = $auth1->get_result();
 
-    $auth1 = "SELECT password, uid FROM user where username = ";
-    $auth1 .= "'".$input_name."'";
-    # 需改为prepare statement
-   	$authen1 = $db->query($auth1);
+    #$auth1 = "SELECT password, uid FROM user where username = ";
+    #$auth1 .= "'".$input_name."'";
+   	#$authen1 = $db->query($auth1);
+
    	if (!$authen1){
    		echo "Something wrong!!";
    		showerror();				# if query faild, show error message.
@@ -16,10 +20,14 @@
 
 
 
-    $auth2 = "SELECT password, uid FROM user where email = ";
-    $auth2 .= "'".$input_name."'";
-    # 需改为prepare statement
-    $authen2 = $db->query($auth2);
+    $auth2 = $db->prepare("SELECT password, uid FROM user where email = ?");
+    $auth2->bind_param("s", $input_name);
+    $auth2->execute();
+    $authen2 = $auth2->get_result();
+    #$auth2 = "SELECT password, uid FROM user where email = ";
+    #$auth2 .= "'".$input_name."'";
+    #$authen2 = $db->query($auth2);
+
     if (!$authen2){
       echo "Something wrong!!";
       showerror();        # if query faild, show error message.

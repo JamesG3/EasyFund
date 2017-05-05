@@ -1,4 +1,3 @@
-
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -11,32 +10,31 @@
 <table align=center>
   <tr>
     <td>username:</td>
-    <td><input type="text" size="20" name="uname"></td>
+    <td><input type="text" size="20" name="uname" required></td>
   </tr>
   <tr>
     <td>email:</td>
-    <td><input type="text" size="20" name="email"></td>
+    <td><input type="email" size="20" name="email" required></td>
   </tr>
   <tr>
     <td>hometown:</td>
-    <td><input type="text" size="20" name="hometown"></td>
+    <td><input type="text" size="20" name="hometown" required></td>
   </tr>
   <tr>
     <td>creditcard:</td>
-    <td><input type="text" size="20" name="creditcard"></td>
+    <td><input type="text" size="20" name="creditcard" required pattern= "[0-9]{16}"></td>
   </tr>
   <tr>
     <td>password:</td>
-    <td><input type="text" size="20" name="psw"></td>
+    <td><input type="text" size="20" name="psw" required></td>
   </tr>
   <tr>
     <td>interests:</td>
-    <td><input type="text" size="20" name="interests"></td>
+    <td><input type="text" size="20" name="interests" required></td>
   </tr>
 </table>
 
 <p align=center><input type="submit" value="register now">
-<!--需要检查是否格式正确，所有信息必须都填写，不能为空-->
 
 </form>
 </body>

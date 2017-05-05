@@ -33,11 +33,16 @@ if (isset($_SESSION['uid'])){
     $input_descri = $_POST["description"];
 
 
-    $check1 = "SELECT pname FROM project where pname = ";
-    $check1 .= "'".$input_pname."'";
-    
 
-   	$ifexist1 = $db->query($check1);
+    $check1 = $db->prepare("SELECT pname FROM project where pname = ?");
+    $check1->bind_param("s",$input_name);
+    $check1->execute();
+    $ifexist1 = $check1->get_result();
+
+    #$check1 = "SELECT pname FROM project where pname = ";
+    #$check1 .= "'".$input_pname."'";
+   	#$ifexist1 = $db->query($check1);
+    
    	if (!$ifexist1){
    		echo "Something wrong!!";
    		showerror();				# if query faild, show error message.

@@ -11,15 +11,28 @@
     $input_interests = $_POST["interests"];
 
 
-    $check1 = "SELECT username FROM user where username = ";
-    $check1 .= "'".$input_name."'";
 
-    $check2 = "SELECT email FROM user where email = ";
-    $check2 .= "'".$input_email."'";
+    #$check1 = "SELECT username FROM user where username = ";
+    #$check1 .= "'".$input_name."'";
+
+    $check1 = $db->prepare("SELECT username FROM user where username = ?");
+    $check1->bind_param("s",$input_name);
+    $check1->execute();
+    $ifexist1 = $check1->get_result();
+
+    $check2 = $db->prepare("SELECT email FROM user where email = ?");
+    $check2->bind_param("s",$input_email);
+    $check2->execute();
+    $ifexist2 = $check2->get_result();
 
 
-   	$ifexist1 = $db->query($check1);
-    $ifexist2 = $db->query($check2);
+    #$check2 = "SELECT email FROM user where email = ";
+    #$check2 .= "'".$input_email."'";
+
+
+   	#$ifexist1 = $db->query($check1);
+    #$ifexist2 = $db->query($check2);
+    
    	if (!$ifexist1 or !$ifexist2){
    		echo "Something wrong!!";
    		showerror();				# if query faild, show error message.

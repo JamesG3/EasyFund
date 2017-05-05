@@ -11,11 +11,11 @@
 <table align=center>
   <tr>
     <td>Enter a username:</td>
-    <td><input type="text" size="20" name="uname"></td>
+    <td><input type="text" size="20" name="uname" required></td>
   </tr>
   <tr>
     <td>Enter a password:</td>
-    <td><input type="text" size="20" name="psw"></td>
+    <td><input type="password" size="20" name="psw" required></td>
   </tr>
 </table>
 
@@ -31,4 +31,3 @@
 </html>
 
 <?php
-

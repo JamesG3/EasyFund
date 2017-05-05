@@ -2,7 +2,7 @@
 session_start();
 
 if (isset($_SESSION['uid'])){
-require 'style.php';
+
 ?>
 <html>
 <head>
@@ -15,11 +15,11 @@ require 'style.php';
 <table align=center>
   <tr>
     <td>Stars:</td>
-    <td> <input type="text" size="10" name="stars"> </td>
+    <td> <input type="text" size="10" name="stars" required pattern = "[0-5][\.][0-9]"> </td>
   </tr>
   <tr>
     <td>Some brief review:</td>
-    <td><textarea id = "input" rows=10 cols=40 name="review"></textarea></td>
+    <td><textarea id = "input" rows=10 cols=40 name="review" required></textarea></td>
   </tr>
 
 </table>

@@ -15,21 +15,33 @@
     $fstate = 'incomplete';
 
 
-    $getCCN = "SELECT creditcard from user where uid = ";
-    $getCCN .= "'".$_SESSION['uid']."'";
-    $get_CCN = $db->query($getCCN);
+    $getCCN = $db->prepare("SELECT creditcard from user where uid = ?");
+    $getCCN->bind_param("i",$_SESSION['uid']);
+    $getCCN->execute();
+    $get_CCN = $getCCN->get_result();
+
+
+
+    #$getCCN = "SELECT creditcard from user where uid = ";
+    #$getCCN .= "'".$_SESSION['uid']."'";
+    #$get_CCN = $db->query($getCCN);
 
     while ($row = $get_CCN->fetch_assoc()){
       $CCN = $row['creditcard'];
     }
 
 
-    $check = "SELECT fid FROM fund where uid = ";
-    $check .= "'".$_SESSION['uid']."'";
-    $check .= " and pid = ";
-    $check .= "'".$_SESSION['pid']."'";
+    $check = $db->prepare("SELECT fid FROM fund where uid = ? and pid = ?");
+    $check->bind_param("ii",$_SESSION['uid'], $_SESSION['pid']);
+    $check->execute();
+    $ifexist = $check->get_result();
 
-   	$ifexist = $db->query($check);
+    #$check = "SELECT fid FROM fund where uid = ";
+    #$check .= "'".$_SESSION['uid']."'";
+    #$check .= " and pid = ";
+    #$check .= "'".$_SESSION['pid']."'";
+
+   	#$ifexist = $db->query($check);
 
 
    	if (!$ifexist){
@@ -51,9 +63,16 @@
       $fid = $row['fid'];
     }
 
-    $getfamount = "SELECT famount from fund where fid = ";
-    $getfamount .= "'".$fid."'";
-    $get_amount = $db->query($getfamount);
+    $getfamount = $db->prepare("SELECT famount from fund where fid = ?");
+    $getfamount->bind_param("i", $fid);
+    $getfamount->execute();
+    $get_amount = $getfamount->get_result();
+
+
+    #$getfamount = "SELECT famount from fund where fid = ";
+    #$getfamount .= "'".$fid."'";
+    #$get_amount = $db->query($getfamount);
+
     while ($row = $get_amount->fetch_assoc()){
       $famount = $row['famount'];
     }
