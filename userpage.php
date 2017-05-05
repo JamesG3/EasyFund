@@ -85,26 +85,55 @@ if(isset($_GET["id"])){
 	// echo "'page";
 	// echo "<br>";
 	// echo "<br>";
-	$query = "SELECT username FROM user where uid = '{$_GET["id"]}'";
-	$res = $db->query($query);
 
-	if (!$res){
+	$uid = $_SESSION["uid"];
+	$id = $_GET["id"];
+
+	// $query = "SELECT username FROM user where uid = '{$_GET["id"]}'";
+	// $res = $db->query($query);
+
+	// if (!$res){
+ //   	echo "Something wrong!!";
+ //   	showerror();				# if query faild, show error message.
+ //   	}
+
+ //   	while ($row = $res->fetch_assoc()){
+ //    $username = $row['username'];
+ //    }
+
+	$query = $db->prepare("SELECT username FROM user where uid = ?");
+	$query->bind_param("i", $id);
+	$query->execute();
+
+	$query->bind_result($row);
+	$query->fetch();
+	#echo $row;
+
+	if (!$row){
    	echo "Something wrong!!";
    	showerror();				# if query faild, show error message.
    	}
 
-   	while ($row = $res->fetch_assoc()){
-    $username = $row['username'];
-    }
+   	$username = $row;
 
+$query->close();
     echo "<h2>Welcome to  ".$username."'s Page</h2>" ;
 
 echo "<input id = 'back' type='submit' value='back to my page' onClick='back_to_me()';>";
 
 
-$follow_query = "SELECT * from friendship where user1 = '{$_GET["id"]}' and user2 = '{$_SESSION['uid']}'";
 
-$follow_result = mysqli_query($db,$follow_query);
+
+
+	$follow_query = $db->prepare("SELECT * from friendship where user1 = ? and user2 = ?");
+    $follow_query->bind_param("ii",$id,$uid);
+    $follow_query->execute();
+    $follow_result = $follow_query->get_result();
+
+
+// $follow_query = "SELECT * from friendship where user1 = '{$_GET["id"]}' and user2 = '{$_SESSION['uid']}'";
+
+// $follow_result = mysqli_query($db,$follow_query);
 
 // echo $_GET['id'];
 // echo $_SESSION['uid'];
@@ -132,9 +161,14 @@ if($rowcount != 0){
 1) Recent Proeject List
 **************************************************/
 
-	$recentproject_query = "SELECT *  from project where uid in (  select user1 from friendship where user2 = {$_GET["id"]} )";
-	// $recentproject_query = "SELECT *  from project where uid = {$_SESSION["uid"]}";
-	$recentproject_result = mysqli_query($db,$recentproject_query);
+	// $recentproject_query = "SELECT *  from project where uid in (  select user1 from friendship where user2 = {$_GET["id"]} )";
+	// // $recentproject_query = "SELECT *  from project where uid = {$_SESSION["uid"]}";
+	// $recentproject_result = mysqli_query($db,$recentproject_query);
+
+	$recentproject_query = $db->prepare("SELECT *  from project where uid in (  select user1 from friendship where user2 = ? )");
+    $recentproject_query->bind_param("i",$id);
+    $recentproject_query->execute();
+    $recentproject_result = $recentproject_query->get_result();
 
 
 	// echo "check!";
@@ -213,15 +247,20 @@ if($recentproject_result){
 	}; 
 }
 
-
+$recentproject_query->close();
 
 /**************************************************
 2) Recent Comments
 **************************************************/
 
-	$recentcomment_query = "SELECT project.pid as ppid, pname, project.uid as ouid, category, tags, posttime, comm, comment.uid as cuid from project right join comment on project.pid = comment.pid where comment.uid in ( select user1 from friendship where user2 = {$_GET["id"]}  )";
+	// $recentcomment_query = "SELECT project.pid as ppid, pname, project.uid as ouid, category, tags, posttime, comm, comment.uid as cuid from project right join comment on project.pid = comment.pid where comment.uid in ( select user1 from friendship where user2 = {$_GET["id"]}  )";
 
-	$recentcomment_result = mysqli_query($db,$recentcomment_query);
+	// $recentcomment_result = mysqli_query($db,$recentcomment_query);
+
+	$recentcomment_query = $db->prepare("SELECT project.pid as ppid, pname, project.uid as ouid, category, tags, posttime, comm, comment.uid as cuid from project right join comment on project.pid = comment.pid where comment.uid in ( select user1 from friendship where user2 = ?  )");
+    $recentcomment_query->bind_param("i",$id);
+    $recentcomment_query->execute();
+    $recentcomment_result = $recentcomment_query->get_result();
 
 
 
@@ -265,15 +304,20 @@ if($recentcomment_result){
 	}; 
 } 
 
-
+$recentcomment_query->close();
 /**************************************************
 3) Recent Pledges
 **************************************************/
 
-	$recentpledges_query = "SELECT project.pid as ppid, pname, fund.uid as fuid, famount, fstate from project right join fund on project.pid = fund.pid where fund.uid in ( select user1 from friendship where user2 = {$_GET["id"]} )";
+	// $recentpledges_query = "SELECT project.pid as ppid, pname, fund.uid as fuid, famount, fstate from project right join fund on project.pid = fund.pid where fund.uid in ( select user1 from friendship where user2 = {$_GET["id"]} )";
 
-	// $recentpledges_query = "SELECT *  from fund where uid in (  select user1 from friendship where user2 = {$_SESSION["uid"]} )";
-	$recentpledges_result = mysqli_query($db,$recentpledges_query);
+	// // $recentpledges_query = "SELECT *  from fund where uid in (  select user1 from friendship where user2 = {$_SESSION["uid"]} )";
+	// $recentpledges_result = mysqli_query($db,$recentpledges_query);
+
+	$recentpledges_query = $db->prepare("SELECT project.pid as ppid, pname, fund.uid as fuid, famount, fstate from project right join fund on project.pid = fund.pid where fund.uid in ( select user1 from friendship where user2 = ? )");
+    $recentpledges_query->bind_param("i",$id);
+    $recentpledges_query->execute();
+    $recentpledges_result = $recentpledges_query->get_result();
 
 
 
@@ -303,14 +347,18 @@ if($recentpledges_result){
 	};
 } 
 
-
+$recentpledges_query->close();
 /**************************************************
 4) Recent Likes
 **************************************************/
 
 
-	$recentLike_query = "SELECT project.pid  as ppid,pname,minamount,maxamount,project.uid as puid,fundDdl, projDdl, category, tags, description, likePj.uid as luid  from project right join likePj on project.pid = likePj.pid where likePj.uid in ( select user1 from friendship where user2 = {$_GET["id"]} )";
-	$recentLike_result = mysqli_query($db,$recentLike_query);
+	// $recentLike_query = "SELECT project.pid  as ppid,pname,minamount,maxamount,project.uid as puid,fundDdl, projDdl, category, tags, description, likePj.uid as luid  from project right join likePj on project.pid = likePj.pid where likePj.uid in ( select user1 from friendship where user2 = {$_GET["id"]} )";
+	// $recentLike_result = mysqli_query($db,$recentLike_query);
+	$recentLike_query = $db->prepare("SELECT project.pid  as ppid,pname,minamount,maxamount,project.uid as puid,fundDdl, projDdl, category, tags, description, likePj.uid as luid  from project right join likePj on project.pid = likePj.pid where likePj.uid in ( select user1 from friendship where user2 = ? )");
+    $recentLike_query->bind_param("i",$id);
+    $recentLike_query->execute();
+    $recentLike_result = $recentLike_query->get_result();
 
 
 		echo "<table>
@@ -356,14 +404,18 @@ if($recentLike_result){
 
 	};
 }
-
+$recentLike_query->close();
 /**************************************************
 4.5) My Project
 **************************************************/
 
-$myproject_query = "SELECT *  from project where uid = {$_GET["id"]} ";
+// $myproject_query = "SELECT *  from project where uid = {$_GET["id"]} ";
 
-$myproject_result = mysqli_query($db,$myproject_query);
+// $myproject_result = mysqli_query($db,$myproject_query);
+	$myproject_query = $db->prepare("SELECT *  from project where uid = ? ");
+    $myproject_query->bind_param("i",$id);
+    $myproject_query->execute();
+    $myproject_result = $myproject_query->get_result();
 
 		echo "<table>
 		<caption>".$username."'s Projects List</caption>
@@ -412,18 +464,23 @@ if($myproject_result){
 
 	}; 
 }
-
+$myproject_query->close();
 /**************************************************
 5) My Pledge
 **************************************************/
 
 
-	$mypledges_query = "SELECT project.pid as ppid, pname, project.uid as ouid, famount, fstate, chargeTime from project right join fund on project.pid = fund.pid where fund.uid ={$_GET["id"]}";
+	// $mypledges_query = "SELECT project.pid as ppid, pname, project.uid as ouid, famount, fstate, chargeTime from project right join fund on project.pid = fund.pid where fund.uid ={$_GET["id"]}";
 
 
 
-	// $mypledges_query = "SELECT *  from fund where uid ={$_SESSION["uid"]}";
-	$mypledges_result = mysqli_query($db,$mypledges_query);
+	// // $mypledges_query = "SELECT *  from fund where uid ={$_SESSION["uid"]}";
+	// $mypledges_result = mysqli_query($db,$mypledges_query);
+
+	$mypledges_query = $db->prepare("SELECT project.pid as ppid, pname, project.uid as ouid, famount, fstate, chargeTime from project right join fund on project.pid = fund.pid where fund.uid =?");
+    $mypledges_query->bind_param("i",$id);
+    $mypledges_query->execute();
+    $mypledges_result = $mypledges_query->get_result();
 
 		echo "<table>
 		<caption>".$username."'s Pledges</caption>
@@ -452,17 +509,22 @@ if($mypledges_result){
 	}; 
 }
 
-
+$mypledges_query->close();
 
 /**************************************************
 6) My Pledge rate
 **************************************************/
-	$mypledgesrate_query = "SELECT project.pid as ppid, project.uid as ouid, pname, star, review, ratetime, owner_review from project right join sponRate on project.pid = sponRate.pid where sponRate.uid ={$_GET["id"]}";
+	// $mypledgesrate_query = "SELECT project.pid as ppid, project.uid as ouid, pname, star, review, ratetime, owner_review from project right join sponRate on project.pid = sponRate.pid where sponRate.uid ={$_GET["id"]}";
 
 
 
-	// $mypledgesrate_query = "SELECT *  from sponRate where uid ={$_SESSION["uid"]}";
-	$mypledgesrate_result = mysqli_query($db,$mypledgesrate_query);
+	// // $mypledgesrate_query = "SELECT *  from sponRate where uid ={$_SESSION["uid"]}";
+	// $mypledgesrate_result = mysqli_query($db,$mypledgesrate_query);
+
+	$mypledgesrate_query = $db->prepare("SELECT project.pid as ppid, project.uid as ouid, pname, star, review, ratetime, owner_review from project right join sponRate on project.pid = sponRate.pid where sponRate.uid =?");
+    $mypledgesrate_query->bind_param("i",$id);
+    $mypledgesrate_query->execute();
+    $mypledgesrate_result = $mypledgesrate_query->get_result();
 
 		echo "<table>
 		<caption>".$username."'s Rate</caption>
@@ -491,7 +553,7 @@ if($mypledgesrate_result){
 	};
 } 
 
-
+#$mypledgesrate_query->close();
 /**************************************************
 7) recommend
 **************************************************/

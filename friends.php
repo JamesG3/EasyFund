@@ -20,6 +20,26 @@ if (isset($_SESSION['uid'])){
 	
 
 ?>
+<style type="text/css">
+	#back {
+		/*float: left;*/
+		margin-left: 15px;
+		margin-top: 10px;
+		margin-bottom: 20px;
+	}
+</style>
+
+	<script type="text/javascript">
+
+		function back_to_me(){
+
+  			window.location.href = "mainpage.php";
+		}
+
+
+
+	</script>
+
 <table cellspacing="20" align = "center">
 	<caption>users i followed</caption>
 		<tr>
@@ -27,6 +47,11 @@ if (isset($_SESSION['uid'])){
 			<td><strong>name</strong></td>
 		</tr>
 <?php
+
+
+echo "<input id = 'back' type='submit' value='back to my page' onClick='back_to_me()';>";
+
+
 	while ($row = $followingResult->fetch_assoc()){
 		?>
 		<tr>

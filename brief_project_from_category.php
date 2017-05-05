@@ -74,11 +74,19 @@ if(!$_SESSION["uid"]){
 	exit();
 }
 
+$category = $_GET["category"];
+$uid = $_SESSION["uid"];
+
 
 	echo "<input id = 'back' type='submit' value='back to my page' onClick='back_to_me()';>";
 
-	$search_query = "SELECT *  FROM project  where category = '{$_GET["category"]}'";
-	$search_result = mysqli_query($db,$search_query);
+	// $search_query = "SELECT *  FROM project  where category = '{$_GET["category"]}'";
+	// $search_result = mysqli_query($db,$search_query);
+
+	$search_query = $db->prepare("SELECT *  FROM project  where category = ? ");
+    $search_query->bind_param("s",$category);
+    $search_query->execute();
+    $search_result = $search_query->get_result();
 
 
 		echo "<table>
@@ -131,16 +139,21 @@ if($search_result){
 
 
 	$currenttime = date('Y-m-d H:i:s');
-	$insert_tag = "INSERT into tagHistory (uid, tag, searchTagTime) values ('{$_SESSION["uid"]}', '{$_GET["category"]}', '$currenttime')";
+	// $insert_tag = "INSERT into tagHistory (uid, tag, searchTagTime) values ('{$_SESSION["uid"]}', '{$_GET["category"]}', '$currenttime')";
 
-	if(mysqli_query($db, $insert_tag)) {
-		// echo "Congratulations ";
-		// echo ":  ";
-  //   	echo "New record created successfully";
-		}
-	else{
-    	echo "Error: " . $sql . "<br>" . mysqli_error($db);
-		}
+      $insert_tag = $db->prepare("INSERT INTO tagHistory (`uid`, `tag`, `searchTagTime`) VALUES (?,?,?)");
+      $insert_tag->bind_param("iss", $uid, $category, $currenttime);
+      $insert_tag->execute();	
 
+	// if(mysqli_query($db, $insert_tag)) {
+	// 	// echo "Congratulations ";
+	// 	// echo ":  ";
+ //  //   	echo "New record created successfully";
+	// 	}
+	// else{
+ //    	echo "Error: " . $sql . "<br>" . mysqli_error($db);
+	// 	}
+    echo $insert_tag->error; //to check errors
+	$insert_tag->close();
 ?>
 

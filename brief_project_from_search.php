@@ -75,18 +75,28 @@ if(!$_SESSION["uid"]){
 	exit();
 }
 
+$searchtext = $_POST["searchtext"];
+$likesearchtext = "%".$searchtext."%";
+$uid = $_SESSION["uid"];
+
+
 // if($_POST["searchtext"] == ''){
 
 // 	echo "kong";
 // }
 	echo "<input id = 'back' type='submit' value='back to my page' onClick='back_to_me()';>";
 
-if($_POST["searchtext"] != ''){
+if($searchtext != ''){
 	// echo "no kong";
 
 
-	$search_query = "SELECT *  FROM project  where (pname like '%{$_POST["searchtext"]}%'  or category like '%{$_POST["searchtext"]}%'  or tags like '%{$_POST["searchtext"]}%'  or description like '%{$_POST["searchtext"]}%')";
-	$search_result = mysqli_query($db,$search_query);
+	// $search_query = "SELECT *  FROM project  where (pname like '%{$_POST["searchtext"]}%'  or category like '%{$_POST["searchtext"]}%'  or tags like '%{$_POST["searchtext"]}%'  or description like '%{$_POST["searchtext"]}%')";
+	// $search_result = mysqli_query($db,$search_query);
+
+	$search_query = $db->prepare("SELECT *  FROM project  where (pname like ?  or category like ?  or tags like ?  or description like ?)");
+    $search_query->bind_param("ssss",$likesearchtext,$likesearchtext,$likesearchtext,$likesearchtext);
+    $search_query->execute();
+    $search_result = $search_query->get_result();
 
 
 		echo "<table>
@@ -138,21 +148,32 @@ if($search_result){
 } 
 
 	$currenttime = date('Y-m-d H:i:s');
-	$insert_search = "INSERT into keywordHistory (uid, keyword, searchKwTime) values ('{$_SESSION["uid"]}', '{$_POST["searchtext"]}', '$currenttime')";
+	// $insert_search = "INSERT into keywordHistory (uid, keyword, searchKwTime) values ('{$_SESSION["uid"]}', '{$_POST["searchtext"]}', '$currenttime')";
 
-	if(mysqli_query($db, $insert_search)) {
-		// echo "Congratulations ";
-		// echo ":  ";
-  //   	echo "New record created successfully";
-		}
-	else{
-    	echo "Error: " . $sql . "<br>" . mysqli_error($db);
-		}
+	// if(mysqli_query($db, $insert_search)) {
+	// 	// echo "Congratulations ";
+	// 	// echo ":  ";
+ //  //   	echo "New record created successfully";
+	// 	}
+	// else{
+ //    	echo "Error: " . $sql . "<br>" . mysqli_error($db);
+	// 	}
+
+	$insert_search = $db->prepare("INSERT INTO keywordHistory (`uid`, `keyword`, `searchKwTime`) VALUES (?,?,?)");
+      $insert_search->bind_param("iss", $uid, $searchtext, $currenttime);
+      $insert_search->execute();	
+
+    echo $insert_search->error; //to check errors
+	$insert_search->close();
+
+
 }
 if($_POST["searchtext"] == ''){
 
-	$search_query = "SELECT *  FROM project  where (pname like '%{$_POST["searchtext"]}%'  or category like '%{$_POST["searchtext"]}%'  or tags like '%{$_POST["searchtext"]}%'  or description like '%{$_POST["searchtext"]}%')";
-	$search_result = mysqli_query($db,$search_query);
+	$search_query = $db->prepare("SELECT *  FROM project  where (pname like ?  or category like ?  or tags like ?  or description like ?)");
+    $search_query->bind_param("ssss",$likesearchtext,$likesearchtext,$likesearchtext,$likesearchtext);
+    $search_query->execute();
+    $search_result = $search_query->get_result();
 
 
 		echo "<table>
