@@ -137,10 +137,39 @@ if (isset($_SESSION['uid'])){
 	#$mate = $db->query($getmaterial);
 
 	while ($row = $mate->fetch_assoc()){
+		$type = explode(".", $row['mediaMate']); 
 	?>
 
 	<tr>
-		<td><a href = <?php echo "{$row['mediaMate']}" ?> > Download  </td>
+
+		<?php
+			if (end($type) == 'jpg' or end($type) == 'gif' or end($type) == 'png'){
+		?>
+		<td><img src= "<?php echo "{$row['mediaMate']}" ?>" width="180" /></td>
+		
+		<?php
+			}
+			else if (end($type) == 'mp4'){
+		?>
+		<td>
+			<video width="180" controls="controls">
+				<source src="<?php echo "{$row['mediaMate']}" ?>" type="video/<?php echo end($type) ?>" />
+			</vedio>
+		</td>
+
+		<?php
+			}
+			else if (end($type) == 'mp3'){
+		?>
+		<td>
+			<embed height="50" width="180" src="<?php echo "{$row['mediaMate']}" ?>" />
+		</td>
+
+		<?php
+			}
+		?>
+
+
 		<td name = "textMate"> <?php echo "{$row['textMate']}" ?> </td>
 		<td name = "materialtime"> <?php echo "{$row['materialtime']}" ?> </td>
 	</tr>

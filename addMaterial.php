@@ -19,7 +19,7 @@ if (isset($_SESSION['uid'])){
 <form method="POST" action="add_material.php" enctype = "multipart/form-data">
 <table align=center>
   <tr>
-    <td>Upload Material:</td>
+    <td>Upload Material:<br/>(jpg/png/gif/</br>mp3/mp4)</td>
     <td><input type="file" name="fileToUpload" id = "fileToUpload"></td>
   </tr>
   <tr>

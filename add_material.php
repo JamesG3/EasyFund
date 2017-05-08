@@ -27,12 +27,21 @@ if (file_exists($file)) {
     $uploadOk = 0;
 }
 
+
+$type = explode(".", $file);
+
+if (end($type) != "mp4" and end($type) != "mp3" and end($type) != "jpg" and end($type) != "JPG" and end($type) != "gif" and end($type) != "png"){
+	$uploadOk = 0;
+	echo "Sorry, this file format is not supported by easyfund, please upload a valid file. ";
+}
+
+
 if ($uploadOk != 0) {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $file)) {
     	$path = $file;
         echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.\n";
     } else {
-        echo "Sorry, there was an error uploading your file.";
+        echo "Sorry, there was an error uploading your file (file permission error).";
         $uploadOk = 0;
     }
 }
