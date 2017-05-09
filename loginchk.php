@@ -57,7 +57,6 @@
         session_destroy();
         exit;
       }
-
    }
 
    #check email

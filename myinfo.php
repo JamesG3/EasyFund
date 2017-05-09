@@ -41,7 +41,7 @@ if (isset($_SESSION['uid'])){
 	<?php
 
 	while ($row = $res->fetch_assoc()){
-    #echo "{$row['pname']} <br/>";
+    #echo htmlspecialchars("{$row['pname']} <br/>";
     #}
 	#while ($line = mysql_fetch_array($result, MYSQL_ASSOC)) {
 	#foreach($line as $h){
@@ -52,28 +52,28 @@ if (isset($_SESSION['uid'])){
 
 	<tr>
 		<td><strong>username:</strong></td>
-		<td> <input type="text" size="20" name="uname" required value = <?php echo "{$row['username']}" ?> ></td>
+		<td> <input type="text" size="20" name="uname" required value = <?php echo htmlspecialchars("{$row['username']}") ?> ></td>
 	</tr>
 	<tr>
 		<td><strong>email:</strong></td>
-		<td><input type="email" size="20" name="email" required value = <?php echo "{$row['email']}" ?> ></td>
+		<td><input type="email" size="20" name="email" required value = <?php echo htmlspecialchars("{$row['email']}") ?> ></td>
 	</tr>
 	<tr>
 		<td><strong>hometown:</strong></td>
-		<td> <input type="text" size="20" name="hometown" required value = <?php echo "{$row['hometown']}" ?> > </td>
+		<td> <input type="text" size="20" name="hometown" required value = <?php echo htmlspecialchars("{$row['hometown']}") ?> > </td>
 
 	</tr>
 	<tr>
 		<td><strong>creditcard:</strong></td>
-		<td> <input type="text" size="20" name="creditcard" required pattern= "[0-9]{16}" value = <?php echo "{$row['creditcard']}" ?> > </td>
+		<td> <input type="text" size="20" name="creditcard" required pattern= "[0-9]{16}" value = <?php echo htmlspecialchars("{$row['creditcard']}") ?> > </td>
 	</tr>
 	<tr>
 		<td><strong>password:</strong></td>
-		<td> <input type="password" size="20" name="psw" required value = <?php echo "{$row['password']}" ?> > </td>
+		<td> <input type="password" size="20" name="psw" required value = <?php echo htmlspecialchars("{$row['password']}") ?> > </td>
 	</tr>
 	<tr>
 		<td><strong>interests:</strong></td>
-		<td> <input type="text" size="20" name="interests" required value = <?php echo "{$row['interests']}" ?> > </td>
+		<td> <input type="text" size="20" name="interests" required value = <?php echo htmlspecialchars("{$row['interests']}") ?> > </td>
 	</tr>
 
 	<?php

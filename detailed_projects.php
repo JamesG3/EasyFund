@@ -45,7 +45,7 @@ if (isset($_SESSION['uid'])){
 			<td><strong>project name</strong></td>
 			<td><strong>category</strong></td>
 			<td><strong>tags</strong></td>
-			<td><strong>uid</strong></td>
+			<td><strong>owner</strong></td>
 			<td><strong>minimum amount</strong></td>
 			<td><strong>maximum amount</strong></td>
 			<td><strong>current pledge</strong></td>
@@ -65,7 +65,7 @@ if (isset($_SESSION['uid'])){
 	#$find .= "'".$_SESSION['pid']."'";
 	#$projinfo = $db->query($find);
 
-	$find = $db->prepare("SELECT * FROM project where pid = ?");
+	$find = $db->prepare("SELECT * FROM project natural join user where pid = ?");
     $find->bind_param("i", $_SESSION['pid']);
     $find->execute();
     $projinfo = $find->get_result();	
@@ -85,17 +85,17 @@ if (isset($_SESSION['uid'])){
 		$pjstate = $row['Pjstate'];
 	?>
 	<tr>
-		<td name = "pname"> <?php echo "{$row['pname']}" ?> </td>
-		<td name = "category"> <?php echo "{$row['category']}"; $category = $row['category'] ;?> </td>
-		<td name = "tags"> <?php echo "{$row['tags']}" ?> </td>
-		<td name = "uid"> <?php echo "{$row['uid']}"; $puid = $row['uid'];?> </td>
-		<td name = "minamount"> <?php echo "{$row['minamount']}" ?> </td>
-		<td name = "maxamount"> <?php echo "{$row['maxamount']}" ?> </td>
-		<td name = "curramount"> <?php echo "{$row['current_amount']}" ?> </td>
-		<td name = "description"> <?php echo "{$row['description']}" ?> </td>
-		<td name = "fundDdl"> <?php echo "{$row['fundDdl']}" ?> </td>
-		<td name = "projDdl"> <?php echo "{$row['projDdl']}" ?> </td>
-		<td name = "Pjstate"> <?php echo "{$row['Pjstate']}" ?> </td>
+		<td name = "pname"> <?php echo htmlspecialchars("{$row['pname']}") ?> </td>
+		<td name = "category"> <?php echo htmlspecialchars("{$row['category']}"); $category = $row['category'] ;?> </td>
+		<td name = "tags"> <?php echo htmlspecialchars("{$row['tags']}") ?> </td>
+		<td name = "owner"> <?php echo htmlspecialchars("{$row['username']}"); $puid = $row['uid'];?> </td>
+		<td name = "minamount"> <?php echo htmlspecialchars("{$row['minamount']}") ?> </td>
+		<td name = "maxamount"> <?php echo htmlspecialchars("{$row['maxamount']}") ?> </td>
+		<td name = "curramount"> <?php echo htmlspecialchars("{$row['current_amount']}") ?> </td>
+		<td name = "description"> <?php echo htmlspecialchars("{$row['description']}") ?> </td>
+		<td name = "fundDdl"> <?php echo htmlspecialchars("{$row['fundDdl']}") ?> </td>
+		<td name = "projDdl"> <?php echo htmlspecialchars("{$row['projDdl']}") ?> </td>
+		<td name = "Pjstate"> <?php echo htmlspecialchars("{$row['Pjstate']}") ?> </td>
 
 		<?php
 		while ($row = $likenum->fetch_assoc()){
@@ -145,7 +145,7 @@ if (isset($_SESSION['uid'])){
 		<?php
 			if (end($type) == 'jpg' or end($type) == 'gif' or end($type) == 'png'){
 		?>
-		<td><img src= "<?php echo "{$row['mediaMate']}" ?>" width="180" /></td>
+		<td><img src= "<?php echo htmlspecialchars("{$row['mediaMate']}") ?>" width="180" /></td>
 		
 		<?php
 			}
@@ -153,7 +153,7 @@ if (isset($_SESSION['uid'])){
 		?>
 		<td>
 			<video width="180" controls="controls">
-				<source src="<?php echo "{$row['mediaMate']}" ?>" type="video/<?php echo end($type) ?>" />
+				<source src="<?php echo htmlspecialchars("{$row['mediaMate']}") ?>" type="video/<?php echo end($type) ?>" />
 			</vedio>
 		</td>
 
@@ -162,7 +162,7 @@ if (isset($_SESSION['uid'])){
 			else if (end($type) == 'mp3'){
 		?>
 		<td>
-			<embed height="50" width="180" src="<?php echo "{$row['mediaMate']}" ?>" />
+			<embed height="50" width="180" src="<?php echo htmlspecialchars("{$row['mediaMate']}") ?>" />
 		</td>
 
 		<?php
@@ -170,8 +170,8 @@ if (isset($_SESSION['uid'])){
 		?>
 
 
-		<td name = "textMate"> <?php echo "{$row['textMate']}" ?> </td>
-		<td name = "materialtime"> <?php echo "{$row['materialtime']}" ?> </td>
+		<td name = "textMate"> <?php echo htmlspecialchars("{$row['textMate']}") ?> </td>
+		<td name = "materialtime"> <?php echo htmlspecialchars("{$row['materialtime']}") ?> </td>
 	</tr>
 
 
@@ -203,9 +203,9 @@ if (isset($_SESSION['uid'])){
 	?>
 
 	<tr>
-		<td name = "comment"> <?php echo "{$row['comm']}" ?> </td>
-		<td name = "user"> <a href="userpage.php?id=<?php echo "{$row['uid']}" ?>"> <?php echo "{$row['uid']}" ?> </td>
-		<td name = "posttime"> <?php echo "{$row['posttime']}" ?> </td>
+		<td name = "comment"> <?php echo htmlspecialchars("{$row['comm']}") ?> </td>
+		<td name = "user"> <a href="userpage.php?id=<?php echo htmlspecialchars("{$row['uid']}") ?>"> <?php echo htmlspecialchars("{$row['uid']}") ?> </td>
+		<td name = "posttime"> <?php echo htmlspecialchars("{$row['posttime']}") ?> </td>
 	</tr>
 
 	<?php
@@ -246,10 +246,10 @@ if (isset($_SESSION['uid'])){
 	?>
 
 	<tr>
-		<td name = "user"> <?php echo "{$row['uid']}" ?> </td>
-		<td name = "star"> <?php echo "{$row['star']}" ?> </td>
-		<td name = "review"> <?php echo "{$row['review']}" ?> </td>
-		<td name = "ratetime"> <?php echo "{$row['ratetime']}" ?> </td>
+		<td name = "user"> <?php echo htmlspecialchars("{$row['uid']}") ?> </td>
+		<td name = "star"> <?php echo htmlspecialchars("{$row['star']}") ?> </td>
+		<td name = "review"> <?php echo htmlspecialchars("{$row['review']}") ?> </td>
+		<td name = "ratetime"> <?php echo htmlspecialchars("{$row['ratetime']}") ?> </td>
 	</tr>
 
 

@@ -56,7 +56,7 @@ echo "<input id = 'back' type='submit' value='back to my page' onClick='back_to_
 		?>
 		<tr>
 			<td name = "uid"><a href="userpage.php?id=<?php echo "{$row['uid']}" ?>"> <?php echo "{$row['uid']}" ?> </td>
-			<td name = "username"> <?php echo "{$row['username']}" ?> </td>
+			<td name = "username"> <?php echo htmlspecialchars("{$row['username']}") ?> </td>
 		</tr>
 		<?php
 	}
@@ -76,7 +76,7 @@ echo "<input id = 'back' type='submit' value='back to my page' onClick='back_to_
 		?>
 		<tr>
 			<td name = "uid"><a href="userpage.php?id=<?php echo "{$row['uid']}" ?>"> <?php echo "{$row['uid']}" ?> </td>
-			<td name = "username"> <?php echo "{$row['username']}" ?> </td>
+			<td name = "username"> <?php echo htmlspecialchars("{$row['username']}") ?> </td>
 		</tr>
 		<?php
 	}

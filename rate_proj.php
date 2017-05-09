@@ -18,6 +18,12 @@ if (isset($_SESSION['uid'])){
     $ReviewPro->execute();
     echo "You have successfully rate this project!";
 
+    ?>
+    <td>
+    	<a href="detailed_projects.php?prjID=<?php echo $_SESSION['pid']?>">Click here back to project page</a>
+    </td>
+    <?php
+
 
 }
 
