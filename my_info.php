@@ -8,7 +8,7 @@
     $input_email = $_POST["email"];
     $input_hometown = $_POST["hometown"];
     $input_creditcard = $_POST["creditcard"];
-    $input_password = $_POST["psw"];
+    $input_password = md5($_POST["psw"]);
     $input_interests = $_POST["interests"];
 
 
@@ -35,9 +35,8 @@
     }
 
   if(mysqli_num_rows($ifexist1)==0 and mysqli_num_rows($ifexist2)==0){
-      #直接更新
-    $update = $db->prepare("UPDATE user SET `username`= ?, `email`= ?, `hometown`= ?, `creditcard`= ?, `password`= ?, `interests`= ? WHERE `uid`= ?");
-    $update->bind_param("ssssssi", $input_name, $input_email, $input_hometown, $input_creditcard, $input_password, $input_interests, $_SESSION['uid']);
+    $update = $db->prepare("UPDATE user SET `username`= ?, `email`= ?, `hometown`= ?, `creditcard`= ?, `interests`= ? WHERE `uid`= ?");
+    $update->bind_param("sssssi", $input_name, $input_email, $input_hometown, $input_creditcard, $input_interests, $_SESSION['uid']);
     $update->execute();
     echo "You've changed your profile successfully.";
   }
@@ -48,8 +47,8 @@
     $uid = $row['uid'];
     }
     if($uid == $_SESSION['uid']){
-      $update = $db->prepare("UPDATE user SET `username`= ?, `email`= ?, `hometown`= ?, `creditcard`= ?, `password`= ?, `interests`= ? WHERE `uid`= ?");
-      $update->bind_param("ssssssi", $input_name, $input_email, $input_hometown, $input_creditcard, $input_password, $input_interests, $_SESSION['uid']);
+      $update = $db->prepare("UPDATE user SET `username`= ?, `email`= ?, `hometown`= ?, `creditcard`= ?, `interests`= ? WHERE `uid`= ?");
+      $update->bind_param("sssssi", $input_name, $input_email, $input_hometown, $input_creditcard, $input_interests, $_SESSION['uid']);
       $update->execute();
       echo "You've changed your profile successfully.";
     }
@@ -65,8 +64,8 @@
     $uid = $row['uid'];
     }
     if($uid == $_SESSION['uid']){
-      $update = $db->prepare("UPDATE user SET `username`= ?, `email`= ?, `hometown`= ?, `creditcard`= ?, `password`= ?, `interests`= ? WHERE `uid`= ?");
-      $update->bind_param("ssssssi", $input_name, $input_email, $input_hometown, $input_creditcard, $input_password, $input_interests, $_SESSION['uid']);
+      $update = $db->prepare("UPDATE user SET `username`= ?, `email`= ?, `hometown`= ?, `creditcard`= ?, `interests`= ? WHERE `uid`= ?");
+      $update->bind_param("sssssi", $input_name, $input_email, $input_hometown, $input_creditcard, $input_interests, $_SESSION['uid']);
       $update->execute();
       echo "You've changed your profile successfully.";
     }
@@ -84,8 +83,8 @@
       $uid = $row['uid'];
       }
       if($uid == $_SESSION['uid']){
-        $update = $db->prepare("UPDATE user SET `username`= ?, `email`= ?, `hometown`= ?, `creditcard`= ?, `password`= ?, `interests`= ? WHERE `uid`= ?");
-        $update->bind_param("ssssssi", $input_name, $input_email, $input_hometown, $input_creditcard, $input_password, $input_interests, $_SESSION['uid']);
+        $update = $db->prepare("UPDATE user SET `username`= ?, `email`= ?, `hometown`= ?, `creditcard`= ?, `interests`= ? WHERE `uid`= ?");
+        $update->bind_param("sssssi", $input_name, $input_email, $input_hometown, $input_creditcard, $input_interests, $_SESSION['uid']);
         $update->execute();
         echo "You've changed your profile successfully.";
       }

@@ -31,6 +31,7 @@ if (isset($_SESSION['uid'])){
         window.location.href = "mainpage.php";
     }
 </script>
+
   		<input id = 'back' type='submit' value='back to my page' onClick='back_to_me()';>
 
 		<h1 align = "center">Profile edit</h1>
@@ -68,10 +69,6 @@ if (isset($_SESSION['uid'])){
 		<td> <input type="text" size="20" name="creditcard" required pattern= "[0-9]{16}" value = <?php echo htmlspecialchars("{$row['creditcard']}") ?> > </td>
 	</tr>
 	<tr>
-		<td><strong>password:</strong></td>
-		<td> <input type="password" size="20" name="psw" required value = <?php echo htmlspecialchars("{$row['password']}") ?> > </td>
-	</tr>
-	<tr>
 		<td><strong>interests:</strong></td>
 		<td> <input type="text" size="20" name="interests" required value = <?php echo htmlspecialchars("{$row['interests']}") ?> > </td>
 	</tr>
@@ -82,6 +79,11 @@ if (isset($_SESSION['uid'])){
 	
 	</table>
 	<p align=center><input type="submit" value="save">
+	</form>
+	<form method="POST" action="updatepsw.php">
+		<tr>
+			<td><p align=center><input type="submit" value="change my pasword"></td>
+		</tr>
 	</form>
 	</body>
 		</html>
