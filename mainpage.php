@@ -280,7 +280,8 @@ $recentproject_query->close();
 	// $recentcomment_result = mysqli_query($db,$recentcomment_query);
 
 
-	$recentcomment_query = $db->prepare("SELECT project.pid as ppid, pname, project.uid as ouid, category, tags, posttime, comm, comment.uid as cuid from project right join comment on project.pid = comment.pid where comment.uid in ( select user1 from friendship where user2 = ?  )");
+	// $recentcomment_query = $db->prepare("SELECT project.pid as ppid, pname, project.uid as ouid, category, tags, posttime, comm, comment.uid as cuid from project right join comment on project.pid = comment.pid where comment.uid in ( select user1 from friendship where user2 = ?  )");
+	$recentcomment_query = $db->prepare("SELECT project.pid as ppid, pname, project.uid as ouid,u1.username as oname, category, tags, posttime, comm, comment.uid as cuid, u2.username as cname from project, comment,user u1,user u2 where project.pid = comment.pid and project.uid = u1.uid and comment.uid  = u2.uid and comment.uid in ( select user1 from friendship where user2 = ?  )");
     $recentcomment_query->bind_param("i",$_SESSION["uid"]);
     $recentcomment_query->execute();
     $recentcomment_result = $recentcomment_query->get_result();
@@ -307,7 +308,7 @@ if($recentcomment_result){
     		#echo "<td>" . $row['pname'] . "</td>";
     		echo '<td><a href="detailed_projects.php?prjID='.htmlspecialchars($row['ppid']).'">'.htmlspecialchars($row['pname']).'</a></td>';
     		#echo "<td>" . $row['uid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['ouid']).'">'.htmlspecialchars($row['ouid']).'</a></td>';
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['ouid']).'">'.htmlspecialchars($row['oname']).'</a></td>';
     		echo '<td><a href="brief_project_from_category.php?category='.htmlspecialchars($row['category']).'">'.htmlspecialchars($row['category']).'</a></td>';
     		#echo "<td>" . $row['tags'] . "</td>";
     		echo "<td>";
@@ -321,7 +322,7 @@ if($recentcomment_result){
 			echo "</td>";
     		echo "<td>" . htmlspecialchars($row['posttime']) . "</td>";
     		echo "<td>" . htmlspecialchars($row['comm']) . "</td>";
-    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['cuid']).'">'.htmlspecialchars($row['cuid']).'</a></td>';
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['cuid']).'">'.htmlspecialchars($row['cname']).'</a></td>';
     		echo "</tr>";
 
 	}; 
@@ -385,7 +386,8 @@ $recentpledges_query->close();
 	// $recentLike_query = "SELECT project.pid  as ppid,pname,minamount,maxamount,project.uid as puid,fundDdl, projDdl, category, tags, description, likePj.uid as luid  from project right join likePj on project.pid = likePj.pid where likePj.uid in ( select user1 from friendship where user2 = {$_SESSION["uid"]} )";
 	// $recentLike_result = mysqli_query($db,$recentLike_query);
 
-	$recentLike_query = $db->prepare("SELECT project.pid  as ppid,pname,minamount,maxamount,project.uid as puid,fundDdl, projDdl, category, tags, description, likePj.uid as luid  from project right join likePj on project.pid = likePj.pid where likePj.uid in ( select user1 from friendship where user2 = ? )");
+	// $recentLike_query = $db->prepare("SELECT project.pid  as ppid,pname,minamount,maxamount,project.uid as puid,fundDdl, projDdl, category, tags, description, likePj.uid as luid  from project right join likePj on project.pid = likePj.pid where likePj.uid in ( select user1 from friendship where user2 = ? )");
+	$recentLike_query = $db->prepare("SELECT project.pid  as ppid,pname,minamount,maxamount,project.uid as puid,u1.username as oname, fundDdl, projDdl, category, tags, description, likePj.uid as luid , u2.username as lname from project,likePj, user u1, user u2 where project.pid = likePj.pid and project.uid = u1.uid and likePj.uid = u2.uid and likePj.uid in ( select user1 from friendship where user2 = ? )");
     $recentLike_query->bind_param("i",$_SESSION["uid"]);
     $recentLike_query->execute();
     $recentLike_result = $recentLike_query->get_result();
@@ -412,7 +414,7 @@ if($recentLike_result){
     		#echo "<td>" . $row['minamount'] . "</td>";
     		#echo "<td>" . $row['maxamount'] . "</td>";
     		#echo "<td>" . $row['puid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['puid']).'">'.htmlspecialchars($row['puid']).'</a></td>';
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['puid']).'">'.htmlspecialchars($row['oname']).'</a></td>';
     		echo "<td>" . htmlspecialchars($row['fundDdl']) . "</td>";
     		#echo "<td>" . $row['projDdl'] . "</td>";
     		#echo "<td>" . $row['category'] . "</td>";
@@ -429,7 +431,7 @@ if($recentLike_result){
 			echo "</td>";
     		#echo "<td>" . $row['description'] . "</td>";
     		#echo "<td>" . $row['luid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['luid']).'">'.htmlspecialchars($row['luid']).'</a></td>';
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['luid']).'">'.htmlspecialchars($row['lname']).'</a></td>';
     		echo "</tr>";
 
 	};
