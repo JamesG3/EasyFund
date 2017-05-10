@@ -165,7 +165,7 @@ if($rowcount != 0){
 	// // $recentproject_query = "SELECT *  from project where uid = {$_SESSION["uid"]}";
 	// $recentproject_result = mysqli_query($db,$recentproject_query);
 
-	$recentproject_query = $db->prepare("SELECT *  from project where uid in (  select user1 from friendship where user2 = ? )");
+	$recentproject_query = $db->prepare("SELECT *  from project natural join user where uid in (  select user1 from friendship where user2 = ? )");
     $recentproject_query->bind_param("i",$id);
     $recentproject_query->execute();
     $recentproject_result = $recentproject_query->get_result();
@@ -203,7 +203,7 @@ if($rowcount != 0){
 		<caption>Recent Projects List</caption>
 		<tr>
 		<th>Project Name</th>
-		<th>Owner ID</th>
+		<th>Owner</th>
 		<th>fund Deadline</th>
 		<th>Category</th>
 		<th>Tags</th>
@@ -219,24 +219,24 @@ if($recentproject_result){
 			echo "<tr>";
     		#echo "<td>" . $row['pid'] . "</td>";
     		#echo "<td>" . $row['pname'] . "</td>";
-    		echo '<td><a href="detailed_projects.php?prjID='.$row['pid'].'">'.$row['pname'].'</a></td>';
+    		echo '<td><a href="detailed_projects.php?prjID='.htmlspecialchars($row['pid']).'">'.htmlspecialchars($row['pname']).'</a></td>';
     		#echo "<td>" . $row['minamount'] . "</td>";
     		#echo "<td>" . $row['maxamount'] . "</td>";
 
     		#echo "<td>" . $row['uid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['uid'].'">'.$row['uid'].'</a></td>';
-    		echo "<td>" . $row['fundDdl'] . "</td>";
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['uid']).'">'.htmlspecialchars($row['username']).'</a></td>';
+    		echo "<td>" . htmlspecialchars($row['fundDdl']) . "</td>";
     		#echo "<td>" . $row['projDdl'] . "</td>";
     		#echo "<td>" . $row['category'] . "</td>";
-    		echo '<td><a href="brief_project_from_category.php?category='.$row['category'].'">'.$row['category'].'</a></td>';
+    		echo '<td><a href="brief_project_from_category.php?category='.htmlspecialchars($row['category']).'">'.htmlspecialchars($row['category']).'</a></td>';
 
     		#echo "<td>" . $row['tags'] . "</td>";
     		echo "<td>";
 
-			$tagsArray = explode(',', $row['tags']);
+			$tagsArray = explode(',', htmlspecialchars($row['tags']));
 			foreach($tagsArray as $tag) {
     			#echo $tag.' '; // print each link etc
-    			echo '<a href="brief_project_from_tag.php?tag='.$tag.'">'.$tag.'</a>';
+    			echo '<a href="brief_project_from_tag.php?tag='.htmlspecialchars($tag).'">'.htmlspecialchars($tag).'</a>';
     			echo "  ";
 			}
 			echo "</td>";
@@ -268,7 +268,7 @@ $recentproject_query->close();
 		<caption>Recent Comments</caption>
 		<tr>
 		<th>Project Name</th>
-		<th>Owner ID</th>
+		<th>Owner</th>
 		<th>Category</th>
 		<th>Tags</th>
 		<th>Post Time</th>
@@ -282,23 +282,23 @@ if($recentcomment_result){
 	{
 			echo "<tr>";
     		#echo "<td>" . $row['pname'] . "</td>";
-    		echo '<td><a href="detailed_projects.php?prjID='.$row['ppid'].'">'.$row['pname'].'</a></td>';
+    		echo '<td><a href="detailed_projects.php?prjID='.htmlspecialchars($row['ppid']).'">'.htmlspecialchars($row['pname']).'</a></td>';
     		#echo "<td>" . $row['uid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['ouid'].'">'.$row['ouid'].'</a></td>';
-    		echo '<td><a href="brief_project_from_category.php?category='.$row['category'].'">'.$row['category'].'</a></td>';
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['ouid']).'">'.htmlspecialchars($row['ouid']).'</a></td>';
+    		echo '<td><a href="brief_project_from_category.php?category='.htmlspecialchars($row['category']).'">'.htmlspecialchars($row['category']).'</a></td>';
     		#echo "<td>" . $row['tags'] . "</td>";
     		echo "<td>";
 
-			$tagsArray = explode(',', $row['tags']);
+			$tagsArray = explode(',', htmlspecialchars($row['tags']));
 			foreach($tagsArray as $tag) {
     			#echo $tag.' '; // print each link etc
-    			echo '<a href="brief_project_from_tag.php?tag='.$tag.'">'.$tag.'</a>';
+    			echo '<a href="brief_project_from_tag.php?tag='.htmlspecialchars($tag).'">'.htmlspecialchars($tag).'</a>';
     			echo "  ";
 			}
 			echo "</td>";
-    		echo "<td>" . $row['posttime'] . "</td>";
-    		echo "<td>" . $row['comm'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['cuid'].'">'.$row['cuid'].'</a></td>';
+    		echo "<td>" . htmlspecialchars($row['posttime']) . "</td>";
+    		echo "<td>" . htmlspecialchars($row['comm']) . "</td>";
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['cuid']).'">'.htmlspecialchars($row['cuid']).'</a></td>';
     		echo "</tr>";
 
 	}; 
@@ -314,7 +314,7 @@ $recentcomment_query->close();
 	// // $recentpledges_query = "SELECT *  from fund where uid in (  select user1 from friendship where user2 = {$_SESSION["uid"]} )";
 	// $recentpledges_result = mysqli_query($db,$recentpledges_query);
 
-	$recentpledges_query = $db->prepare("SELECT project.pid as ppid, pname, fund.uid as fuid, famount, fstate from project right join fund on project.pid = fund.pid where fund.uid in ( select user1 from friendship where user2 = ? )");
+	$recentpledges_query = $db->prepare("SELECT project.pid as ppid, pname, username, fund.uid as fuid, famount, fstate from project natural join user right join fund on project.pid = fund.pid where fund.uid in ( select user1 from friendship where user2 = ? )");
     $recentpledges_query->bind_param("i",$id);
     $recentpledges_query->execute();
     $recentpledges_result = $recentpledges_query->get_result();
@@ -324,8 +324,8 @@ $recentcomment_query->close();
 		echo "<table>
 		<caption>Recent Pledges</caption>
 		<tr>
-		<th>User ID</th>
 		<th>Project Name</th>
+		<th>Pledger Name</th>
 		<th>Fund amount</th>
 		<th>Fund state</th>
 		</tr>";
@@ -336,11 +336,12 @@ if($recentpledges_result){
 			echo "<tr>";
     		#echo "<td>" . $row['fid'] . "</td>";
     		#echo "<td>" . $row['uid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['fuid'].'">'.$row['fuid'].'</a></td>';
+    		
     		#echo "<td>" . $row['pid'] . "</td>";
-    		echo '<td><a href="detailed_projects.php?prjID='.$row['ppid'].'">'.$row['pname'].'</a></td>';
-    		echo "<td>" . $row['famount'] . "</td>";
-    		echo "<td>" . $row['fstate'] . "</td>";
+    		echo '<td><a href="detailed_projects.php?prjID='.htmlspecialchars($row['ppid']).'">'.htmlspecialchars($row['pname']).'</a></td>';
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['fuid']).'">'.htmlspecialchars($row['username']).'</a></td>';
+    		echo "<td>" . htmlspecialchars($row['famount']) . "</td>";
+    		echo "<td>" . htmlspecialchars($row['fstate']) . "</td>";
     		#echo "<td>" . $row['chargeTime'] . "</td>";
     		echo "</tr>";
 
@@ -355,7 +356,7 @@ $recentpledges_query->close();
 
 	// $recentLike_query = "SELECT project.pid  as ppid,pname,minamount,maxamount,project.uid as puid,fundDdl, projDdl, category, tags, description, likePj.uid as luid  from project right join likePj on project.pid = likePj.pid where likePj.uid in ( select user1 from friendship where user2 = {$_GET["id"]} )";
 	// $recentLike_result = mysqli_query($db,$recentLike_query);
-	$recentLike_query = $db->prepare("SELECT project.pid  as ppid,pname,minamount,maxamount,project.uid as puid,fundDdl, projDdl, category, tags, description, likePj.uid as luid  from project right join likePj on project.pid = likePj.pid where likePj.uid in ( select user1 from friendship where user2 = ? )");
+	$recentLike_query = $db->prepare("SELECT project.pid  as ppid,pname, username, minamount,maxamount,project.uid as puid,fundDdl, projDdl, category, tags, description, likePj.uid as luid  from project natural join user right join likePj on project.pid = likePj.pid where likePj.uid in ( select user1 from friendship where user2 = ? )");
     $recentLike_query->bind_param("i",$id);
     $recentLike_query->execute();
     $recentLike_result = $recentLike_query->get_result();
@@ -365,7 +366,7 @@ $recentpledges_query->close();
 		<caption>Recent Likes</caption>
 		<tr>
 		<th>Project Name</th>
-		<th>Owner ID</th>
+		<th>Owner</th>
 		<th>Fund Deadline</th>
 		<th>Category</th>
 		<th>Tags</th>
@@ -378,28 +379,28 @@ if($recentLike_result){
 			echo "<tr>";
     		#echo "<td>" . $row['ppid'] . "</td>";
     		#echo "<td>" . $row['pname'] . "</td>";
-    		echo '<td><a href="detailed_projects.php?prjID='.$row['ppid'].'">'.$row['pname'].'</a></td>';
+    		echo '<td><a href="detailed_projects.php?prjID='.htmlspecialchars($row['ppid']).'">'.htmlspecialchars($row['pname']).'</a></td>';
     		#echo "<td>" . $row['minamount'] . "</td>";
     		#echo "<td>" . $row['maxamount'] . "</td>";
     		#echo "<td>" . $row['puid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['puid'].'">'.$row['puid'].'</a></td>';
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['puid']).'">'.htmlspecialchars($row['username']).'</a></td>';
     		echo "<td>" . $row['fundDdl'] . "</td>";
     		#echo "<td>" . $row['projDdl'] . "</td>";
     		#echo "<td>" . $row['category'] . "</td>";
-    		echo '<td><a href="brief_project_from_category.php?category='.$row['category'].'">'.$row['category'].'</a></td>';
+    		echo '<td><a href="brief_project_from_category.php?category='.htmlspecialchars($row['category']).'">'.htmlspecialchars($row['category']).'</a></td>';
     		#echo "<td>" . $row['tags'] . "</td>";
     		echo "<td>";
 
-			$tagsArray = explode(',', $row['tags']);
+			$tagsArray = explode(',', htmlspecialchars($row['tags']));
 			foreach($tagsArray as $tag) {
     			#echo $tag.' '; // print each link etc
-    			echo '<a href="brief_project_from_tag.php?tag='.$tag.'">'.$tag.'</a>';
+    			echo '<a href="brief_project_from_tag.php?tag='.htmlspecialchars($tag).'">'.htmlspecialchars($tag).'</a>';
     			echo "  ";
 			}
 			echo "</td>";
     		#echo "<td>" . $row['description'] . "</td>";
     		#echo "<td>" . $row['luid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['luid'].'">'.$row['luid'].'</a></td>';
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['luid']).'">'.htmlspecialchars($row['luid']).'</a></td>';
     		echo "</tr>";
 
 	};
@@ -412,7 +413,7 @@ $recentLike_query->close();
 // $myproject_query = "SELECT *  from project where uid = {$_GET["id"]} ";
 
 // $myproject_result = mysqli_query($db,$myproject_query);
-	$myproject_query = $db->prepare("SELECT *  from project where uid = ? ");
+	$myproject_query = $db->prepare("SELECT *  from project natural join user where uid = ? ");
     $myproject_query->bind_param("i",$id);
     $myproject_query->execute();
     $myproject_result = $myproject_query->get_result();
@@ -421,7 +422,7 @@ $recentLike_query->close();
 		<caption>".$username."'s Projects List</caption>
 		<tr>
 		<th>Project Name</th>
-		<th>Owner ID</th>
+		<th>Owner</th>
 		<th>fund Deadline</th>
 		<th>Category</th>
 		<th>Tags</th>
@@ -437,24 +438,24 @@ if($myproject_result){
 			echo "<tr>";
     		#echo "<td>" . $row['pid'] . "</td>";
     		#echo "<td>" . $row['pname'] . "</td>";
-    		echo '<td><a href="detailed_projects.php?prjID='.$row['pid'].'">'.$row['pname'].'</a></td>';
+    		echo '<td><a href="detailed_projects.php?prjID='.htmlspecialchars($row['pid']).'">'.htmlspecialchars($row['pname']).'</a></td>';
     		#echo "<td>" . $row['minamount'] . "</td>";
     		#echo "<td>" . $row['maxamount'] . "</td>";
 
     		#echo "<td>" . $row['uid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['uid'].'">'.$row['uid'].'</a></td>';
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['uid']).'">'.htmlspecialchars($row['username']).'</a></td>';
     		echo "<td>" . $row['fundDdl'] . "</td>";
     		#echo "<td>" . $row['projDdl'] . "</td>";
     		#echo "<td>" . $row['category'] . "</td>";
-    		echo '<td><a href="brief_project_from_category.php?category='.$row['category'].'">'.$row['category'].'</a></td>';
+    		echo '<td><a href="brief_project_from_category.php?category='.htmlspecialchars($row['category']).'">'.htmlspecialchars($row['category']).'</a></td>';
 
     		#echo "<td>" . $row['tags'] . "</td>";
     		echo "<td>";
 
-			$tagsArray = explode(',', $row['tags']);
+			$tagsArray = explode(',', htmlspecialchars($row['tags']));
 			foreach($tagsArray as $tag) {
     			#echo $tag.' '; // print each link etc
-    			echo '<a href="brief_project_from_tag.php?tag='.$tag.'">'.$tag.'</a>';
+    			echo '<a href="brief_project_from_tag.php?tag='.htmlspecialchars($tag).'">'.htmlspecialchars($tag).'</a>';
     			echo "  ";
 			}
 			echo "</td>";
@@ -477,7 +478,7 @@ $myproject_query->close();
 	// // $mypledges_query = "SELECT *  from fund where uid ={$_SESSION["uid"]}";
 	// $mypledges_result = mysqli_query($db,$mypledges_query);
 
-	$mypledges_query = $db->prepare("SELECT project.pid as ppid, pname, project.uid as ouid, famount, fstate, chargeTime from project right join fund on project.pid = fund.pid where fund.uid =?");
+	$mypledges_query = $db->prepare("SELECT project.pid as ppid, pname, username, project.uid as ouid, famount, fstate, chargeTime from project natural join user right join fund on project.pid = fund.pid where fund.uid =?");
     $mypledges_query->bind_param("i",$id);
     $mypledges_query->execute();
     $mypledges_result = $mypledges_query->get_result();
@@ -486,7 +487,7 @@ $myproject_query->close();
 		<caption>".$username."'s Pledges</caption>
 		<tr>
 		<th>Project Name</th>
-		<th>Owner ID</th>
+		<th>Owner</th>
 		<th>Fund amount</th>
 		<th>Fund state</th>
 		<th>Charge Time</th>
@@ -498,12 +499,12 @@ if($mypledges_result){
 			echo "<tr>";
     		#echo "<td>" . $row['fid'] . "</td>";
     		#echo "<td>" . $row['uid'] . "</td>";
-    		echo '<td><a href="detailed_projects.php?prjID='.$row['ppid'].'">'.$row['pname'].'</a></td>';
-    		echo '<td><a href="userpage.php?id='.$row['ouid'].'">'.$row['ouid'].'</a></td>';
+    		echo '<td><a href="detailed_projects.php?prjID='.htmlspecialchars($row['ppid']).'">'.htmlspecialchars($row['pname']).'</a></td>';
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['ouid']).'">'.htmlspecialchars($row['username']).'</a></td>';
     		#echo "<td>" . $row['pid'] . "</td>";
-    		echo "<td>" . $row['famount'] . "</td>";
-    		echo "<td>" . $row['fstate'] . "</td>";
-    		echo "<td>" . $row['chargeTime'] . "</td>";
+    		echo "<td>" . htmlspecialchars($row['famount']) . "</td>";
+    		echo "<td>" . htmlspecialchars($row['fstate']) . "</td>";
+    		echo "<td>" . htmlspecialchars($row['chargeTime']) . "</td>";
     		echo "</tr>";
 
 	}; 
@@ -521,7 +522,7 @@ $mypledges_query->close();
 	// // $mypledgesrate_query = "SELECT *  from sponRate where uid ={$_SESSION["uid"]}";
 	// $mypledgesrate_result = mysqli_query($db,$mypledgesrate_query);
 
-	$mypledgesrate_query = $db->prepare("SELECT project.pid as ppid, project.uid as ouid, pname, star, review, ratetime, owner_review from project right join sponRate on project.pid = sponRate.pid where sponRate.uid =?");
+	$mypledgesrate_query = $db->prepare("SELECT project.pid as ppid, project.uid as ouid, pname,username, star, review, ratetime, owner_review from project natural join user right join sponRate on project.pid = sponRate.pid where sponRate.uid =?");
     $mypledgesrate_query->bind_param("i",$id);
     $mypledgesrate_query->execute();
     $mypledgesrate_result = $mypledgesrate_query->get_result();
@@ -530,7 +531,7 @@ $mypledges_query->close();
 		<caption>".$username."'s Rate</caption>
 		<tr>
 		<th>Project Name</th>
-		<th>Owner ID</th>
+		<th>Owner</th>
 		<th>Stars</th>
 		<th>Review</th>
 		<th>Rate Time</th>
@@ -542,12 +543,12 @@ if($mypledgesrate_result){
 	{
 			echo "<tr>";
     		#echo "<td>" . $row['pid'] . "</td>";
-    		echo '<td><a href="detailed_projects.php?prjID='.$row['ppid'].'">'.$row['pname'].'</a></td>';
-    		echo '<td><a href="userpage.php?id='.$row['ouid'].'">'.$row['ouid'].'</a></td>';
-    		echo "<td>" . $row['star'] . "</td>";
-    		echo "<td>" . $row['review'] . "</td>";
-    		echo "<td>" . $row['ratetime'] . "</td>";
-    		echo "<td>" . $row['owner_review'] . "</td>";
+    		echo '<td><a href="detailed_projects.php?prjID='.htmlspecialchars($row['ppid']).'">'.htmlspecialchars($row['pname']).'</a></td>';
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['ouid']).'">'.htmlspecialchars($row['username']).'</a></td>';
+    		echo "<td>" . htmlspecialchars($row['star']) . "</td>";
+    		echo "<td>" . htmlspecialchars($row['review']) . "</td>";
+    		echo "<td>" . htmlspecialchars($row['ratetime']) . "</td>";
+    		echo "<td>" . htmlspecialchars($row['owner_review']) . "</td>";
     		echo "</tr>";
 
 	};

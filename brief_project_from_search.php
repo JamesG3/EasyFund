@@ -93,7 +93,7 @@ if($searchtext != ''){
 	// $search_query = "SELECT *  FROM project  where (pname like '%{$_POST["searchtext"]}%'  or category like '%{$_POST["searchtext"]}%'  or tags like '%{$_POST["searchtext"]}%'  or description like '%{$_POST["searchtext"]}%')";
 	// $search_result = mysqli_query($db,$search_query);
 
-	$search_query = $db->prepare("SELECT *  FROM project  where (pname like ?  or category like ?  or tags like ?  or description like ?)");
+	$search_query = $db->prepare("SELECT *  FROM project natural join user where (pname like ?  or category like ?  or tags like ?  or description like ?)");
     $search_query->bind_param("ssss",$likesearchtext,$likesearchtext,$likesearchtext,$likesearchtext);
     $search_query->execute();
     $search_result = $search_query->get_result();
@@ -103,7 +103,7 @@ if($searchtext != ''){
 		<caption>Projects List</caption>
 		<tr>
 		<th>Project Name</th>
-		<th>Owner ID</th>
+		<th>Owner</th>
 		<th>fund Deadline</th>
 		<th>Category</th>
 		<th>Tags</th>
@@ -115,27 +115,27 @@ if($search_result){
 			echo "<tr>";
     		#echo "<td>" . $row['pid'] . "</td>";
     		#echo "<td>" . $row['pname'] . "</td>";
-    		echo '<td><a href="detailed_projects.php?prjID='.$row['pid'].'">'.$row['pname'].'</a></td>';
+    		echo '<td><a href="detailed_projects.php?prjID='.htmlspecialchars($row['pid']).'">'.htmlspecialchars($row['pname']).'</a></td>';
     		#echo "<td>" . $row['minamount'] . "</td>";
     		#echo "<td>" . $row['maxamount'] . "</td>";
 
     		#echo "<td>" . $row['uid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['uid'].'">'.$row['uid'].'</a></td>';
-    		echo "<td>" . $row['fundDdl'] . "</td>";
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['uid']).'">'.htmlspecialchars($row['username']).'</a></td>';
+    		echo "<td>" . htmlspecialchars($row['fundDdl']) . "</td>";
     		// echo '<td><a href="userpage.php?id='.$row['uid'].'">'.$row['uid'].'</a></td>';
     		#echo "<td>" . $row['fundDdl'] . "</td>";
     		#echo "<td>" . $row['projDdl'] . "</td>";
     		#echo "<td>" . $row['category'] . "</td>";
     		#echo "<td>" . $row['tags'] . "</td>";
-    		echo '<td><a href="brief_project_from_category.php?category='.$row['category'].'">'.$row['category'].'</a></td>';
+    		echo '<td><a href="brief_project_from_category.php?category='.htmlspecialchars($row['category']).'">'.htmlspecialchars($row['category']).'</a></td>';
 
     		#echo "<td>" . $row['tags'] . "</td>";
     		echo "<td>";
 
-			$tagsArray = explode(',', $row['tags']);
+			$tagsArray = explode(',', htmlspecialchars($row['tags']));
 			foreach($tagsArray as $tag) {
     			#echo $tag.' '; // print each link etc
-    			echo '<a href="brief_project_from_tag.php?tag='.$tag.'">'.$tag.'</a>';
+    			echo '<a href="brief_project_from_tag.php?tag='.htmlspecialchars($tag).'">'.htmlspecialchars($tag).'</a>';
     			echo "  ";
 			}
 			echo "</td>";
@@ -170,7 +170,7 @@ if($search_result){
 }
 if($_POST["searchtext"] == ''){
 
-	$search_query = $db->prepare("SELECT *  FROM project  where (pname like ?  or category like ?  or tags like ?  or description like ?)");
+	$search_query = $db->prepare("SELECT *  FROM project natural join user  where (pname like ?  or category like ?  or tags like ?  or description like ?)");
     $search_query->bind_param("ssss",$likesearchtext,$likesearchtext,$likesearchtext,$likesearchtext);
     $search_query->execute();
     $search_result = $search_query->get_result();
@@ -180,7 +180,7 @@ if($_POST["searchtext"] == ''){
 		<caption>Projects List</caption>
 		<tr>
 		<th>Project Name</th>
-		<th>Owner ID</th>
+		<th>Owner</th>
 		<th>fund Deadline</th>
 		<th>Category</th>
 		<th>Tags</th>
@@ -192,27 +192,27 @@ if($search_result){
 			echo "<tr>";
     		#echo "<td>" . $row['pid'] . "</td>";
     		#echo "<td>" . $row['pname'] . "</td>";
-    		echo '<td><a href="detailed_projects.php?prjID='.$row['pid'].'">'.$row['pname'].'</a></td>';
+    		echo '<td><a href="detailed_projects.php?prjID='.htmlspecialchars($row['pid']).'">'.htmlspecialchars($row['pname']).'</a></td>';
     		#echo "<td>" . $row['minamount'] . "</td>";
     		#echo "<td>" . $row['maxamount'] . "</td>";
 
     		#echo "<td>" . $row['uid'] . "</td>";
-    		echo '<td><a href="userpage.php?id='.$row['uid'].'">'.$row['uid'].'</a></td>';
-    		echo "<td>" . $row['fundDdl'] . "</td>";
+    		echo '<td><a href="userpage.php?id='.htmlspecialchars($row['uid']).'">'.htmlspecialchars($row['username']).'</a></td>';
+    		echo "<td>" . htmlspecialchars($row['fundDdl']) . "</td>";
     		// echo '<td><a href="userpage.php?id='.$row['uid'].'">'.$row['uid'].'</a></td>';
     		#echo "<td>" . $row['fundDdl'] . "</td>";
     		#echo "<td>" . $row['projDdl'] . "</td>";
     		#echo "<td>" . $row['category'] . "</td>";
     		#echo "<td>" . $row['tags'] . "</td>";
-    		echo '<td><a href="brief_project_from_category.php?category='.$row['category'].'">'.$row['category'].'</a></td>';
+    		echo '<td><a href="brief_project_from_category.php?category='.htmlspecialchars($row['category']).'">'.htmlspecialchars($row['category']).'</a></td>';
 
     		#echo "<td>" . $row['tags'] . "</td>";
     		echo "<td>";
 
-			$tagsArray = explode(',', $row['tags']);
+			$tagsArray = explode(',', htmlspecialchars($row['tags']));
 			foreach($tagsArray as $tag) {
     			#echo $tag.' '; // print each link etc
-    			echo '<a href="brief_project_from_tag.php?tag='.$tag.'">'.$tag.'</a>';
+    			echo '<a href="brief_project_from_tag.php?tag='.htmlspecialchars($tag).'">'.htmlspecialchars($tag).'</a>';
     			echo "  ";
 			}
 			echo "</td>";

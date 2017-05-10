@@ -1,3 +1,19 @@
+<?php 
+session_start();
+$cookie_name = "cookie_uid";
+#echo "cookie: ::::::";
+
+#echo $_COOKIE[$cookie_name];
+
+
+if(isset($_COOKIE["cookie_uid"])) {
+
+  $_SESSION["uid"] = $_COOKIE[$cookie_name];
+  header("Location: mainpage.php");
+}
+
+?>
+
 
 <html>
 <head>
@@ -30,4 +46,4 @@
 </body>
 </html>
 
-<?php
+

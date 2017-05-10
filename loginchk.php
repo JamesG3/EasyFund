@@ -1,4 +1,5 @@
 <?php
+
     
     #$db = new mysqli('127.0.0.1', 'root', 'root','easyfund') or die('Could not connect: ' . mysqli_error());
     require 'db.php';
@@ -46,6 +47,12 @@
       if (md5($_POST["psw"]) == $password){
         #$_SESSION["username"] = $input_name;
         $_SESSION["uid"] = $uid;
+
+        #################
+        #set cookie
+        #################
+
+        setcookie("cookie_uid", $uid ,time()+600, "/");
         header("Location: mainpage.php");
 
       }
@@ -68,6 +75,12 @@
       if (md5($_POST["psw"]) == $password){
         #$_SESSION["username"] = $input_name;
         $_SESSION["uid"] = $uid;
+
+        #################
+        #set cookie
+        #################
+        setcookie("cookie_uid", $uid ,time()+600, "/");
+
         header("Location: mainpage.php");
 
       }
@@ -90,4 +103,5 @@
   	 session_destroy();
   	 exit;
 	}
+
 
