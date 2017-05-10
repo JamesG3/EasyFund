@@ -190,7 +190,7 @@ if (isset($_SESSION['uid'])){
 	</tr>
 	<?php
 	
-	$getcomment = $db->prepare("SELECT * from comment WHERE pid = ?");
+	$getcomment = $db->prepare("SELECT * from comment natural join user WHERE pid = ? ORDER BY posttime DESC");
     $getcomment->bind_param("i", $_SESSION['pid']);
     $getcomment->execute();
     $comment = $getcomment->get_result();
@@ -204,7 +204,7 @@ if (isset($_SESSION['uid'])){
 
 	<tr>
 		<td name = "comment"> <?php echo htmlspecialchars("{$row['comm']}") ?> </td>
-		<td name = "user"> <a href="userpage.php?id=<?php echo htmlspecialchars("{$row['uid']}") ?>"> <?php echo htmlspecialchars("{$row['uid']}") ?> </td>
+		<td name = "user"> <a href="userpage.php?id=<?php echo htmlspecialchars("{$row['uid']}") ?>"> <?php echo htmlspecialchars("{$row['username']}") ?> </td>
 		<td name = "posttime"> <?php echo htmlspecialchars("{$row['posttime']}") ?> </td>
 	</tr>
 
@@ -232,7 +232,7 @@ if (isset($_SESSION['uid'])){
 
 	<?php
 	
-	$getreview = $db->prepare("SELECT * from sponRate WHERE pid = ? ORDER by ratetime desc");
+	$getreview = $db->prepare("SELECT * from sponRate, user WHERE sponRate.uid = user.uid and pid = ? ORDER by ratetime desc");
     $getreview->bind_param("i", $_SESSION['pid']);
     $getreview->execute();
     $rate = $getreview->get_result();
@@ -246,7 +246,7 @@ if (isset($_SESSION['uid'])){
 	?>
 
 	<tr>
-		<td name = "user"> <?php echo htmlspecialchars("{$row['uid']}") ?> </td>
+		<td name = "user"> <?php echo htmlspecialchars("{$row['username']}") ?> </td>
 		<td name = "star"> <?php echo htmlspecialchars("{$row['star']}") ?> </td>
 		<td name = "review"> <?php echo htmlspecialchars("{$row['review']}") ?> </td>
 		<td name = "ratetime"> <?php echo htmlspecialchars("{$row['ratetime']}") ?> </td>
@@ -292,12 +292,9 @@ if (isset($_SESSION['uid'])){
 
 
 	<form method="POST" action="like_action.php">
-		<table align = "center">
 			<tr>
 				<td><p align=center><input type="submit" value="I like this project!"></td>
 			</tr>
-
-		</table>
 	</form>
 
 	</body>
@@ -340,8 +337,7 @@ if (isset($_SESSION['uid'])){
     		}
     		else if(($pjstate == 'complete')){
     		echo "<form action='rateproj.php'>
-    		<table align = 'center'>
-    		<td><p align=center><input type='submit' value='Go to rate this project!'></td></table></form>";
+    		<td><p align=center><input type='submit' value='Go to rate this project!'></td></form>";
     			}
     		else{
     		echo "<table align = 'center'><tr><td>You cannot rate this project anymore(failed)!</td></tr></table>";
@@ -356,11 +352,9 @@ if (isset($_SESSION['uid'])){
 	if ($uid == $puid){
 		?>
 	<form method="POST" action="addMaterial.php">
-		<table align = "center">
 			<tr>
 				<td><p align=center><input type="submit" value="Add material"></td>
 			</tr>
-		</table>
 	</form>
 
 		<?php
